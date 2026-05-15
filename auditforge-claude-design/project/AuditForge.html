@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AuditForge — Compliance Audit Platform</title>
+  <link rel="stylesheet" href="tokens.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel" src="data.jsx"></script>
+  <script type="text/babel" src="screens-main.jsx"></script>
+  <script type="text/babel" src="screens-session.jsx"></script>
+  <script type="text/babel" src="screens-misc.jsx"></script>
+  <style>
+    button { font-family: var(--font-sans); }
+    a { color: inherit; }
+    input, textarea, select { font-family: var(--font-sans); color: var(--text-primary); }
+    input::placeholder, textarea::placeholder { color: var(--text-tertiary); }
+    select option { background: var(--surface-elevated); color: var(--text-primary); }
+    .nav-item:hover { background: var(--surface-hover) !important; }
+    .nav-item.active { background: var(--accent-subtle) !important; color: var(--accent-default) !important; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "dark",
+  "sidebarCollapsed": false,
+  "accentColor": "#14B8A6",
+  "density": "comfortable"
+}/*EDITMODE-END*/;
+
+// ─── TOP BAR ──────────────────────────────────────────────────────────────────
+const TopBar = ({ navigate, screen, sidebarCollapsed, setSidebarCollapsed, theme }) => {
+  const [searchVal, setSearchVal] = useState('');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userRef = useRef(null);
+
+  useEffect(() => {
+    const h = e => { if (userRef.current && !userRef.current.contains(e.target)) setUserMenuOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+
+  useEffect(() => {
+    const h = e => { if (e.key === '/') { e.preventDefault(); document.getElementById('global-search')?.focus(); }};
+    document.addEventListener('keydown', h);
+    return () => document.removeEventListener('keydown', h);
+  }, []);
+
+  return (
+    <div style={{
+      height: 'var(--topbar-height)', background: 'var(--surface-secondary)',
+      borderBottom: '1px solid var(--border-default)',
+      display: 'flex', alignItems: 'center', gap: 'var(--sp-4)',
+      padding: '0 var(--sp-4)', flexShrink: 0, zIndex: 50, position: 'relative'
+    }}>
+      {/* Logo + sidebar toggle */}
+      <button onClick={() => setSidebarCollapsed(c => !c)} style={{
+        display: 'flex', alignItems: 'center', gap: 'var(--sp-2)', background: 'none',
+        border: 'none', cursor: 'pointer', color: 'var(--text-primary)', padding: '4px 6px',
+        borderRadius: 'var(--radius-button)', transition: 'background var(--transition)', flexShrink: 0
+      }}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-hover)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+        <Icon name="shield-check" size={18} style={{ color: 'var(--accent-default)' }}/>
+        {!sidebarCollapsed && <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, letterSpacing: '-0.3px' }}>AuditForge</span>}
+      </button>
+
+      {/* Global search */}
+      <div style={{ flex: 1, maxWidth: 420, position: 'relative' }}>
+        <Icon name="search" size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', pointerEvents: 'none' }}/>
+        <input id="global-search" value={searchVal} onChange={e => setSearchVal(e.target.value)}
+          placeholder="Search sessions, findings… (/)"
+          style={{
+            width: '100%', height: 32, padding: '0 32px', background: 'var(--surface-sunken)',
+            border: '1px solid var(--border-default)', borderRadius: 'var(--radius-input)',
+            color: 'var(--text-primary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-sans)', outline: 'none'
+          }}
+          onFocus={e => { e.target.style.borderColor = 'var(--border-focus)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-subtle)'; }}
+          onBlur={e => { e.target.style.borderColor = 'var(--border-default)'; e.target.style.boxShadow = 'none'; }}
+        />
+        <kbd style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', fontSize: 10, color: 'var(--text-tertiary)', background: 'var(--border-default)', padding: '1px 5px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>/</kbd>
+      </div>
+
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+        {/* User menu */}
+        <div ref={userRef} style={{ position: 'relative' }}>
+          <button onClick={() => setUserMenuOpen(o => !o)} style={{
+            display: 'flex', alignItems: 'center', gap: 'var(--sp-2)', background: 'none',
+            border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '4px 8px',
+            borderRadius: 'var(--radius-button)', transition: 'background var(--transition)'
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-hover)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+            <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'var(--accent-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-default)' }}>JD</span>
+            </div>
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Jane Doe</span>
+            <Icon name="chevron-down" size={12}/>
+          </button>
+          {userMenuOpen && (
+            <div className="animate-fade-in" style={{
+              position: 'absolute', top: 'calc(100% + 6px)', right: 0, minWidth: 200,
+              background: 'var(--surface-elevated)', border: '1px solid var(--border-strong)',
+              borderRadius: 'var(--radius-card)', boxShadow: 'var(--shadow-md)', zIndex: 200, overflow: 'hidden', padding: 'var(--sp-1)'
+            }}>
+              <div style={{ padding: 'var(--sp-3) var(--sp-4)', borderBottom: '1px solid var(--border-default)' }}>
+                <p style={{ fontSize: 'var(--text-base)', fontWeight: 500, color: 'var(--text-primary)' }}>Jane Doe</p>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>jane.doe@acme.com</p>
+              </div>
+              {[
+                { label: 'Settings', icon: 'settings', action: () => { navigate('settings'); setUserMenuOpen(false); } },
+                { label: 'Sign out', icon: 'x-circle', action: () => { navigate('logout'); setUserMenuOpen(false); }, destructive: true },
+              ].map(item => (
+                <button key={item.label} onClick={item.action} style={{
+                  display: 'flex', alignItems: 'center', gap: 'var(--sp-2)', width: '100%',
+                  padding: '7px 12px', background: 'none', border: 'none', cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)', fontSize: 'var(--text-base)',
+                  color: item.destructive ? 'var(--severity-critical-text)' : 'var(--text-primary)', textAlign: 'left', borderRadius: 4
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-hover)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                  <Icon name={item.icon} size={13}/>{item.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── SIDEBAR ──────────────────────────────────────────────────────────────────
+const NAV_ITEMS = [
+  { id: 'dashboard',   label: 'Sessions',    icon: 'layout-dashboard' },
+  { id: 'policies',    label: 'Policies',    icon: 'book-open'        },
+  { id: 'audit-trail', label: 'Audit trail', icon: 'history'          },
+  { id: 'settings',    label: 'Settings',    icon: 'settings'         },
+];
+
+const Sidebar = ({ screen, navigate, collapsed }) => {
+  const activeId = screen === 'session' || screen === 'scan' || screen === 'finding' ? 'dashboard' : screen;
+  return (
+    <div style={{
+      width: collapsed ? 'var(--sidebar-collapsed)' : 'var(--sidebar-width)',
+      background: 'var(--surface-secondary)', borderRight: '1px solid var(--border-default)',
+      display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width var(--transition-slow)',
+      overflow: 'hidden'
+    }}>
+      <nav style={{ padding: 'var(--sp-2)', flex: 1 }}>
+        {NAV_ITEMS.map(item => {
+          const isActive = activeId === item.id;
+          return (
+            <button key={item.id}
+              className={`nav-item${isActive ? ' active' : ''}`}
+              onClick={() => navigate(item.id)}
+              title={collapsed ? item.label : undefined}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 'var(--sp-3)', width: '100%',
+                padding: collapsed ? '8px 12px' : '7px 12px', borderRadius: 'var(--radius-button)',
+                border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)',
+                fontSize: 'var(--text-base)', fontWeight: isActive ? 500 : 400, textAlign: 'left',
+                background: isActive ? 'var(--accent-subtle)' : 'transparent',
+                color: isActive ? 'var(--accent-default)' : 'var(--text-secondary)',
+                marginBottom: 2, transition: 'background var(--transition), color var(--transition)',
+                whiteSpace: 'nowrap', overflow: 'hidden'
+              }}>
+              <Icon name={item.icon} size={15} style={{ flexShrink: 0 }}/>
+              {!collapsed && item.label}
+            </button>
+          );
+        })}
+      </nav>
+      {/* Bottom: version */}
+      {!collapsed && (
+        <div style={{ padding: 'var(--sp-4)', borderTop: '1px solid var(--border-default)' }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>AuditForge v2.4.1</p>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 2 }}>Enterprise · HIPAA · SOC2 · OWASP</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ─── GLOBAL AUDIT TRAIL ───────────────────────────────────────────────────────
+const GlobalAuditTrail = () => {
+  const { auditEvents } = useApp();
+  const allEvents = Object.values(auditEvents).flat().sort((a,b) => b.ts.localeCompare(a.ts));
+  return (
+    <div style={{ padding: 'var(--sp-6)', maxWidth: 900 }}>
+      <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 500, marginBottom: 'var(--sp-6)' }}>Audit trail</h1>
+      <AuditTrailTab events={allEvents}/>
+    </div>
+  );
+};
+
+// ─── APP SHELL ────────────────────────────────────────────────────────────────
+const AppShell = ({ screen, params, navigate, theme, setTheme, tweaks }) => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(tweaks?.sidebarCollapsed || false);
+  const isFullscreen = screen === 'scan';
+
+  const renderScreen = () => {
+    switch (screen) {
+      case 'dashboard':    return <DashboardScreen navigate={navigate}/>;
+      case 'session':      return <SessionDetailScreen sessionId={params.sessionId} initialTab={params.tab||'findings'} navigate={navigate}/>;
+      case 'scan':         return <LiveScanScreen sessionId={params.sessionId} navigate={navigate}/>;
+      case 'finding':      return <FindingDetailScreen sessionId={params.sessionId} findingId={params.findingId} navigate={navigate}/>;
+      case 'settings':     return <SettingsScreen theme={theme} setTheme={setTheme}/>;
+      case 'audit-trail':  return <GlobalAuditTrail/>;
+      case 'policies':     return <div style={{ padding: 'var(--sp-6)' }}><h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 500, marginBottom: 'var(--sp-4)' }}>Global policies</h1><p style={{ color: 'var(--text-tertiary)' }}>Manage your organization's policy packs. Select a session to configure which packs apply.</p></div>;
+      default:             return <DashboardScreen navigate={navigate}/>;
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      <TopBar navigate={navigate} screen={screen} sidebarCollapsed={sidebarCollapsed} setSidebarCollapsed={setSidebarCollapsed} theme={theme}/>
+      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        {!isFullscreen && <Sidebar screen={screen} navigate={navigate} collapsed={sidebarCollapsed}/>}
+        <main style={{ flex: 1, overflowY: 'auto', background: 'var(--surface-primary)', minWidth: 0 }}>
+          {renderScreen()}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+// ─── TWEAKS PANEL ─────────────────────────────────────────────────────────────
+const AppTweaks = ({ tweaks, setTweak }) => {
+  return (
+    <TweaksPanel>
+      <TweakSection label="Appearance">
+        <TweakRadio id="theme" label="Theme" value={tweaks.theme} options={[{value:'dark',label:'Dark'},{value:'light',label:'Light'}]} onChange={v => setTweak('theme', v)}/>
+        <TweakRadio id="density" label="Density" value={tweaks.density} options={[{value:'comfortable',label:'Comfortable'},{value:'compact',label:'Compact'}]} onChange={v => setTweak('density', v)}/>
+      </TweakSection>
+      <TweakSection label="Layout">
+        <TweakToggle id="sidebarCollapsed" label="Collapsed sidebar" value={tweaks.sidebarCollapsed} onChange={v => setTweak('sidebarCollapsed', v)}/>
+      </TweakSection>
+      <TweakSection label="Accent color">
+        <TweakColor id="accentColor" label="Accent" value={tweaks.accentColor} options={['#388BFD','#0EA5E9','#6366F1','#14B8A6','#8B5CF6']} onChange={v => setTweak('accentColor', v)}/>
+      </TweakSection>
+    </TweaksPanel>
+  );
+};
+
+// ─── ROOT APP ─────────────────────────────────────────────────────────────────
+const App = () => {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [screen, setScreen] = useState('login');
+  const [params, setParams] = useState({});
+
+  // Apply theme
+  useEffect(() => {
+    document.documentElement.className = tweaks.theme === 'light' ? 'theme-light' : '';
+  }, [tweaks.theme]);
+
+  // Apply accent color
+  useEffect(() => {
+    if (tweaks.accentColor) {
+      document.documentElement.style.setProperty('--accent-default', tweaks.accentColor);
+      document.documentElement.style.setProperty('--border-focus', tweaks.accentColor);
+    }
+  }, [tweaks.accentColor]);
+
+  // Apply density
+  useEffect(() => {
+    if (tweaks.density === 'compact') {
+      document.documentElement.style.setProperty('--topbar-height', '40px');
+      document.documentElement.style.setProperty('--sidebar-width', '200px');
+    } else {
+      document.documentElement.style.setProperty('--topbar-height', '48px');
+      document.documentElement.style.setProperty('--sidebar-width', '220px');
+    }
+  }, [tweaks.density]);
+
+  const navigate = useCallback((s, p = {}) => {
+    if (s === 'logout') { setScreen('login'); setParams({}); return; }
+    setScreen(s);
+    setParams(p);
+    window.scrollTo?.(0, 0);
+  }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const h = e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'n' && screen !== 'login') { /* trigger new session via event */ }
+      if (e.key === 'Escape' && screen !== 'login' && screen !== 'dashboard') navigate('dashboard');
+    };
+    document.addEventListener('keydown', h);
+    return () => document.removeEventListener('keydown', h);
+  }, [screen, navigate]);
+
+  return (
+    <AppProvider>
+      <ToastProvider>
+        {screen === 'login'
+          ? <LoginScreen onLogin={() => navigate('dashboard')}/>
+          : <AppShell screen={screen} params={params} navigate={navigate} theme={tweaks.theme} setTheme={v => setTweak('theme', v)} tweaks={tweaks}/>
+        }
+        <AppTweaks tweaks={tweaks} setTweak={setTweak}/>
+      </ToastProvider>
+    </AppProvider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
