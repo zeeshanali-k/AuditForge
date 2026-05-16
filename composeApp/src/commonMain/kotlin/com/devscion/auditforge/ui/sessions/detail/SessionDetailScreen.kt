@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import auditforge.composeapp.generated.resources.*
 import com.devscion.auditforge.domain.model.Session
 import com.devscion.auditforge.domain.model.SessionStatus
+import com.devscion.auditforge.ui.sessions.detail.audittrail.AuditTrailTab
 import com.devscion.auditforge.ui.sessions.detail.findings.FindingsTab
 import com.devscion.auditforge.ui.sessions.detail.policies.PoliciesTab
 import com.devscion.auditforge.ui.sessions.detail.reports.ReportsTab
@@ -142,7 +143,7 @@ private fun TabContent(tab: SessionDetailTab, sessionId: String, colors: AuditFo
         SessionDetailTab.Scans -> ScansTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Findings -> FindingsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Reports -> ReportsTab(sessionId = sessionId, colors = colors)
-        else -> TabPlaceholder(tab = tab, colors = colors)
+        SessionDetailTab.AuditTrail -> AuditTrailTab(sessionId = sessionId, colors = colors)
     }
 }
 

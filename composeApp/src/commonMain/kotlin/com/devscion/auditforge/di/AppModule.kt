@@ -6,6 +6,7 @@ import com.devscion.auditforge.ReportDownloader
 import com.devscion.auditforge.data.network.AuthApiService
 import com.devscion.auditforge.data.network.PolicyApiService
 import com.devscion.auditforge.data.network.FindingsApiService
+import com.devscion.auditforge.data.network.AuditTrailApiService
 import com.devscion.auditforge.data.network.ReportsApiService
 import com.devscion.auditforge.data.network.ScanApiService
 import com.devscion.auditforge.data.network.SessionApiService
@@ -17,6 +18,9 @@ import com.devscion.auditforge.data.repository.MockPolicyRepository
 import com.devscion.auditforge.data.repository.FindingsRepository
 import com.devscion.auditforge.data.repository.FindingsRepositoryImpl
 import com.devscion.auditforge.data.repository.MockFindingsRepository
+import com.devscion.auditforge.data.repository.AuditTrailRepository
+import com.devscion.auditforge.data.repository.AuditTrailRepositoryImpl
+import com.devscion.auditforge.data.repository.MockAuditTrailRepository
 import com.devscion.auditforge.data.repository.MockReportsRepository
 import com.devscion.auditforge.data.repository.MockScanRepository
 import com.devscion.auditforge.data.repository.MockSessionRepository
@@ -101,6 +105,11 @@ class AppModule {
     fun provideReportsRepository(reportsApiService: ReportsApiService): ReportsRepository =
         if (AppFlavor.USE_MOCK_DATA) MockReportsRepository()
         else ReportsRepositoryImpl(reportsApiService)
+
+    @Singleton
+    fun provideAuditTrailRepository(auditTrailApiService: AuditTrailApiService): AuditTrailRepository =
+        if (AppFlavor.USE_MOCK_DATA) MockAuditTrailRepository()
+        else AuditTrailRepositoryImpl(auditTrailApiService)
 
     @Factory
     fun provideFilePicker(): FilePicker = FilePicker()

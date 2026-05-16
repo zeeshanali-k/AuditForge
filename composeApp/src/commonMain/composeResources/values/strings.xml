@@ -222,6 +222,33 @@
     <string name="generate_report_generating">Generating…</string>
     <string name="generate_report_download">Download</string>
 
+    <!-- Audit trail tab -->
+    <string name="audit_trail_page_title">Audit trail</string>
+    <string name="audit_trail_verify_button">Verify chain integrity</string>
+    <string name="audit_trail_filter_event_type">Event type</string>
+    <string name="audit_trail_filter_all_events">All events</string>
+    <string name="audit_trail_col_timestamp">Timestamp</string>
+    <string name="audit_trail_col_event">Event</string>
+    <string name="audit_trail_col_actor">Actor</string>
+    <string name="audit_trail_col_summary">Summary</string>
+    <string name="audit_trail_events_label">events</string>
+    <string name="audit_trail_load_more">Load more</string>
+    <string name="audit_trail_empty_title">No audit events yet</string>
+    <string name="audit_trail_empty_description">Actions taken in this session will appear here.</string>
+    <string name="audit_trail_details_actor_id">Actor ID</string>
+    <string name="audit_trail_details_payload">Payload</string>
+    <string name="audit_trail_details_prev_hash">Previous hash</string>
+    <string name="audit_trail_details_curr_hash">Current hash</string>
+    <string name="audit_trail_details_copy">Copy to clipboard</string>
+    <string name="audit_trail_verify_title">Chain integrity verification</string>
+    <string name="audit_trail_verify_intact">Chain intact</string>
+    <string name="audit_trail_verify_broken">Chain broken</string>
+    <string name="audit_trail_verify_total_events">Events verified</string>
+    <string name="audit_trail_verify_verified_at">Verified at</string>
+    <string name="audit_trail_verify_break_point">First broken link at event</string>
+    <string name="audit_trail_verify_close">Close</string>
+    <string name="audit_trail_verify_verifying">Verifying…</string>
+
     <!-- Policies tab -->
     <string name="policies_title">Policy packs</string>
     <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>
