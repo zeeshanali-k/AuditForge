@@ -4,6 +4,7 @@ import com.devscion.auditforge.AppFlavor
 import com.devscion.auditforge.FilePicker
 import com.devscion.auditforge.data.network.AuthApiService
 import com.devscion.auditforge.data.network.PolicyApiService
+import com.devscion.auditforge.data.network.FindingsApiService
 import com.devscion.auditforge.data.network.ScanApiService
 import com.devscion.auditforge.data.network.SessionApiService
 import com.devscion.auditforge.data.network.UploadApiService
@@ -11,6 +12,9 @@ import com.devscion.auditforge.data.repository.AuthRepository
 import com.devscion.auditforge.data.repository.AuthRepositoryImpl
 import com.devscion.auditforge.data.repository.MockAuthRepository
 import com.devscion.auditforge.data.repository.MockPolicyRepository
+import com.devscion.auditforge.data.repository.FindingsRepository
+import com.devscion.auditforge.data.repository.FindingsRepositoryImpl
+import com.devscion.auditforge.data.repository.MockFindingsRepository
 import com.devscion.auditforge.data.repository.MockScanRepository
 import com.devscion.auditforge.data.repository.MockSessionRepository
 import com.devscion.auditforge.data.repository.MockUploadRepository
@@ -82,6 +86,11 @@ class AppModule {
     fun provideScanRepository(scanApiService: ScanApiService): ScanRepository =
         if (AppFlavor.USE_MOCK_DATA) MockScanRepository()
         else ScanRepositoryImpl(scanApiService)
+
+    @Singleton
+    fun provideFindingsRepository(findingsApiService: FindingsApiService): FindingsRepository =
+        if (AppFlavor.USE_MOCK_DATA) MockFindingsRepository()
+        else FindingsRepositoryImpl(findingsApiService)
 
     @Factory
     fun provideFilePicker(): FilePicker = FilePicker()

@@ -157,6 +157,42 @@
     <string name="scan_error_in_progress">A scan is already running for this session.</string>
     <string name="scan_error_no_uploads">Upload at least one file before scanning.</string>
 
+    <!-- Findings tab -->
+    <string name="findings_score_label">/ 100</string>
+    <string name="findings_total_label">findings</string>
+    <string name="findings_severity_critical">Critical</string>
+    <string name="findings_severity_high">High</string>
+    <string name="findings_severity_medium">Medium</string>
+    <string name="findings_severity_low">Low</string>
+    <string name="findings_col_severity">Severity</string>
+    <string name="findings_col_title">Title</string>
+    <string name="findings_col_category">Category</string>
+    <string name="findings_col_location">Location</string>
+    <string name="findings_col_status">Status</string>
+    <string name="findings_col_detected">Detected</string>
+    <string name="findings_filter_all_status">All statuses</string>
+    <string name="findings_filter_all_category">All categories</string>
+    <string name="findings_search_placeholder">Search findings…</string>
+    <string name="findings_clear_filters">Clear filters</string>
+    <string name="findings_empty_title">No findings yet</string>
+    <string name="findings_empty_description">Run a scan to detect compliance issues in your uploaded artifacts.</string>
+    <string name="findings_empty_filtered_title">No findings match the current filters</string>
+
+    <!-- Finding detail dialog -->
+    <string name="finding_detail_rule">Rule</string>
+    <string name="finding_detail_severity">Severity</string>
+    <string name="finding_detail_category">Category</string>
+    <string name="finding_detail_compliance_refs">Compliance refs</string>
+    <string name="finding_detail_source">Source location</string>
+    <string name="finding_detail_detected">Detected</string>
+    <string name="finding_detail_comment">Comment</string>
+    <string name="finding_detail_evidence">Evidence</string>
+    <string name="finding_detail_description">Description</string>
+    <string name="finding_detail_remediation">Remediation</string>
+    <string name="finding_detail_references">References</string>
+    <string name="finding_detail_update_status">Update status</string>
+    <string name="finding_detail_comment_placeholder">Add a note (optional)…</string>
+
     <!-- Policies tab -->
     <string name="policies_title">Policy packs</string>
     <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>

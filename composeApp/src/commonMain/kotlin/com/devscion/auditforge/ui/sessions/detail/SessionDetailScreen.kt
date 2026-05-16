@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import auditforge.composeapp.generated.resources.*
 import com.devscion.auditforge.domain.model.Session
 import com.devscion.auditforge.domain.model.SessionStatus
+import com.devscion.auditforge.ui.sessions.detail.findings.FindingsTab
 import com.devscion.auditforge.ui.sessions.detail.policies.PoliciesTab
 import com.devscion.auditforge.ui.sessions.detail.scans.ScansTab
 import com.devscion.auditforge.ui.sessions.detail.uploads.UploadsTab
@@ -138,6 +139,7 @@ private fun TabContent(tab: SessionDetailTab, sessionId: String, colors: AuditFo
         SessionDetailTab.Uploads -> UploadsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Policies -> PoliciesTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Scans -> ScansTab(sessionId = sessionId, colors = colors)
+        SessionDetailTab.Findings -> FindingsTab(sessionId = sessionId, colors = colors)
         else -> TabPlaceholder(tab = tab, colors = colors)
     }
 }
