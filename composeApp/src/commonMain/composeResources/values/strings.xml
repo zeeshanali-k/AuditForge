@@ -39,9 +39,68 @@
     <string name="sessions_empty_title">No sessions yet</string>
     <string name="sessions_empty_description">Create a session to start your first compliance audit.</string>
     <string name="sessions_empty_cta">Create your first session</string>
+    <string name="sessions_filter_all">All</string>
+    <string name="sessions_filter_created">Created</string>
+    <string name="sessions_filter_scanning">Scanning</string>
+    <string name="sessions_filter_completed">Completed</string>
+    <string name="sessions_filter_failed">Failed</string>
+    <string name="sessions_load_more">Load more</string>
+    <string name="sessions_of">of</string>
+    <string name="sessions_results">results</string>
+
+    <!-- Session status labels -->
+    <string name="status_created">Created</string>
+    <string name="status_scanning">Scanning</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_failed">Failed</string>
+
+    <!-- Session list item -->
+    <string name="session_findings">findings</string>
+    <string name="session_score_label">Score</string>
+    <string name="session_created_label">Created</string>
+    <string name="session_delete_action">Delete</string>
+    <string name="session_view_action">View</string>
+
+    <!-- Delete confirmation dialog -->
+    <string name="delete_session_title">Delete session</string>
+    <string name="delete_session_message">This will permanently delete the session and all associated uploads, findings, and reports. This action cannot be undone.</string>
+    <string name="delete_session_confirm">Delete</string>
+    <string name="delete_session_cancel">Cancel</string>
+
+    <!-- Create session dialog -->
+    <string name="create_session_title">Create session</string>
+    <string name="create_session_name_label">Session name</string>
+    <string name="create_session_name_placeholder">e.g. Q2 2026 compliance audit</string>
+    <string name="create_session_description_label">Description (optional)</string>
+    <string name="create_session_description_placeholder">Describe the purpose of this audit session…</string>
+    <string name="create_session_environment_label">Target environment</string>
+    <string name="create_session_env_development">Development</string>
+    <string name="create_session_env_staging">Staging</string>
+    <string name="create_session_env_production">Production</string>
+    <string name="create_session_cancel">Cancel</string>
+    <string name="create_session_submit">Create session</string>
+    <string name="create_session_submitting">Creating…</string>
+    <string name="error_session_name_required">Session name is required</string>
+    <string name="error_session_name_too_short">Session name must be at least 3 characters</string>
+    <string name="error_session_name_too_long">Session name must be at most 120 characters</string>
+
+    <!-- Session detail screen -->
+    <string name="session_detail_tab_uploads">Uploads</string>
+    <string name="session_detail_tab_policies">Policies</string>
+    <string name="session_detail_tab_scans">Scans</string>
+    <string name="session_detail_tab_findings">Findings</string>
+    <string name="session_detail_tab_reports">Reports</string>
+    <string name="session_detail_tab_audit_trail">Audit trail</string>
+    <string name="session_detail_back">Back to sessions</string>
+    <string name="session_detail_loading">Loading session…</string>
+    <string name="session_detail_not_found">Session not found</string>
+    <string name="session_detail_placeholder">This section will be available in a future release.</string>
+    <string name="session_detail_more_actions">More actions</string>
 
     <!-- Accessibility -->
     <string name="a11y_search">Search</string>
     <string name="a11y_user_menu">User menu</string>
     <string name="a11y_close">Close</string>
+    <string name="a11y_delete_session">Delete session</string>
+    <string name="a11y_session_score">Overall compliance score</string>
 </resources>

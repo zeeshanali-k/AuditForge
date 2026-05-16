@@ -7,3 +7,6 @@ data object Login
 
 @Serializable
 data object SessionList
+
+@Serializable
+data class SessionDetail(val sessionId: String)

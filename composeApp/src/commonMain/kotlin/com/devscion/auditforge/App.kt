@@ -5,10 +5,13 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.devscion.auditforge.data.storage.TokenStorage
 import com.devscion.auditforge.ui.Login
+import com.devscion.auditforge.ui.SessionDetail
 import com.devscion.auditforge.ui.SessionList
 import com.devscion.auditforge.ui.login.LoginScreen
+import com.devscion.auditforge.ui.sessions.SessionDetailScreen
 import com.devscion.auditforge.ui.sessions.SessionListScreen
 import com.devscion.auditforge.ui.theme.AuditForgeTheme
 
@@ -36,13 +39,23 @@ fun App() {
 
             composable<SessionList> {
                 SessionListScreen(
-                    onCreateSession = { /* Phase 2 */ },
+                    onSessionClick = { sessionId ->
+                        navController.navigate(SessionDetail(sessionId))
+                    },
                     onLogout = {
                         tokenStorage.clearToken()
                         navController.navigate(Login) {
                             popUpTo<SessionList> { inclusive = true }
                         }
                     },
+                )
+            }
+
+            composable<SessionDetail> { backStackEntry ->
+                val route = backStackEntry.toRoute<SessionDetail>()
+                SessionDetailScreen(
+                    sessionId = route.sessionId,
+                    onBack = { navController.popBackStack() },
                 )
             }
         }

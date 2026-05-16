@@ -1,5 +1,14 @@
 package com.devscion.auditforge.di
 
+import com.devscion.auditforge.AppFlavor
+import com.devscion.auditforge.data.network.AuthApiService
+import com.devscion.auditforge.data.network.SessionApiService
+import com.devscion.auditforge.data.repository.AuthRepository
+import com.devscion.auditforge.data.repository.AuthRepositoryImpl
+import com.devscion.auditforge.data.repository.MockAuthRepository
+import com.devscion.auditforge.data.repository.MockSessionRepository
+import com.devscion.auditforge.data.repository.SessionRepository
+import com.devscion.auditforge.data.repository.SessionRepositoryImpl
 import com.devscion.auditforge.data.storage.TokenStorage
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -35,4 +44,13 @@ class AppModule {
         }
     }
 
+    @Singleton
+    fun provideAuthRepository(authApiService: AuthApiService): AuthRepository =
+        if (AppFlavor.USE_MOCK_DATA) MockAuthRepository()
+        else AuthRepositoryImpl(authApiService)
+
+    @Singleton
+    fun provideSessionRepository(sessionApiService: SessionApiService): SessionRepository =
+        if (AppFlavor.USE_MOCK_DATA) MockSessionRepository()
+        else SessionRepositoryImpl(sessionApiService)
 }
