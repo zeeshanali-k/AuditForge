@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">AuditForge</string>
+    <string name="app_tagline">Compliance audit platform</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Sign in to your account</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_email_placeholder">you@company.com</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_show">Show password</string>
+    <string name="login_password_hide">Hide password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_signing_in">Signing in…</string>
+
+    <!-- Validation errors -->
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Enter a valid email address</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
+    <string name="error_network">Network error. Check your connection.</string>
+    <string name="error_unknown">Something went wrong. Please try again.</string>
+
+    <!-- Navigation -->
+    <string name="nav_sessions">Sessions</string>
+    <string name="nav_policies">Policies</string>
+    <string name="nav_audit_trail">Audit trail</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Session list screen -->
+    <string name="sessions_page_title">Sessions</string>
+    <string name="sessions_create_button">Create session</string>
+    <string name="sessions_account">Account</string>
+    <string name="sessions_sign_out">Sign out</string>
+    <string name="sessions_search_placeholder">Search…</string>
+    <string name="sessions_empty_title">No sessions yet</string>
+    <string name="sessions_empty_description">Create a session to start your first compliance audit.</string>
+    <string name="sessions_empty_cta">Create your first session</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_search">Search</string>
+    <string name="a11y_user_menu">User menu</string>
+    <string name="a11y_close">Close</string>
+</resources>

@@ -9,6 +9,9 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
     jvm()
     
     
@@ -32,6 +35,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(compose.materialIconsExtended)
 
             //Koin
             implementation(libs.koin.core)
@@ -44,7 +48,6 @@ kotlin {
             //Serialization
             implementation(libs.kotlinx.serialization.json)
 
-
             // Ktor Client
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -54,6 +57,9 @@ kotlin {
 
         }
         jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+        wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
         }
         commonTest.dependencies {
