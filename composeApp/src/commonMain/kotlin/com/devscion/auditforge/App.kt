@@ -11,8 +11,8 @@ import com.devscion.auditforge.ui.Login
 import com.devscion.auditforge.ui.SessionDetail
 import com.devscion.auditforge.ui.SessionList
 import com.devscion.auditforge.ui.login.LoginScreen
-import com.devscion.auditforge.ui.sessions.SessionDetailScreen
-import com.devscion.auditforge.ui.sessions.SessionListScreen
+import com.devscion.auditforge.ui.sessions.detail.SessionDetailScreen
+import com.devscion.auditforge.ui.sessions.list.SessionListScreen
 import com.devscion.auditforge.ui.theme.AuditForgeTheme
 
 @Suppress("DEPRECATION")

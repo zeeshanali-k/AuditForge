@@ -1,11 +1,11 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devscion.auditforge.data.network.ApiResult
-import com.devscion.auditforge.domain.usecase.CreateSessionUseCase
-import com.devscion.auditforge.domain.usecase.DeleteSessionUseCase
-import com.devscion.auditforge.domain.usecase.GetSessionsUseCase
+import com.devscion.auditforge.domain.usecase.sessions.CreateSessionUseCase
+import com.devscion.auditforge.domain.usecase.sessions.DeleteSessionUseCase
+import com.devscion.auditforge.domain.usecase.sessions.GetSessionsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -93,14 +93,12 @@ class SessionListViewModel(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isCreating = true) }
-            when (val result = createSessionUseCase(name, current.newSessionDescription.ifBlank { null }, current.newSessionEnvironment)) {
+            when (val result = createSessionUseCase(name, current.newSessionDescription.ifBlank { null }, current.newSessionEnvironment?.name?.lowercase())) {
                 is ApiResult.Success -> {
                     _uiState.update { it.copy(isCreating = false, showCreateDialog = false) }
                     loadSessions(reset = true)
                 }
-                is ApiResult.Error -> _uiState.update {
-                    it.copy(isCreating = false, error = result.message)
-                }
+                is ApiResult.Error -> _uiState.update { it.copy(isCreating = false, error = result.message) }
                 ApiResult.Unauthorized, ApiResult.NetworkError -> _uiState.update {
                     it.copy(isCreating = false, error = "Failed to create session. Check your connection.")
                 }
@@ -113,14 +111,10 @@ class SessionListViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isDeleting = true, sessionToDelete = null) }
             when (val result = deleteSessionUseCase(sessionId)) {
-                is ApiResult.Success -> {
-                    _uiState.update { state ->
-                        state.copy(isDeleting = false, sessions = state.sessions.filter { it.id != sessionId })
-                    }
+                is ApiResult.Success -> _uiState.update { state ->
+                    state.copy(isDeleting = false, sessions = state.sessions.filter { it.id != sessionId })
                 }
-                is ApiResult.Error -> _uiState.update {
-                    it.copy(isDeleting = false, error = result.message)
-                }
+                is ApiResult.Error -> _uiState.update { it.copy(isDeleting = false, error = result.message) }
                 ApiResult.Unauthorized, ApiResult.NetworkError -> _uiState.update {
                     it.copy(isDeleting = false, error = "Failed to delete session. Check your connection.")
                 }

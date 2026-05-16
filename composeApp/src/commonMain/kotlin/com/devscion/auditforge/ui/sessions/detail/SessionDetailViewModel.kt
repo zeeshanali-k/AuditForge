@@ -1,9 +1,9 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devscion.auditforge.data.network.ApiResult
-import com.devscion.auditforge.domain.usecase.GetSessionUseCase
+import com.devscion.auditforge.domain.usecase.sessions.GetSessionUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

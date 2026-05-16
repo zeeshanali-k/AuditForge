@@ -1,7 +1,7 @@
 package com.devscion.auditforge.data.repository
 
-import com.devscion.auditforge.data.model.LoginResponse
-import com.devscion.auditforge.data.model.UserInfo
+import com.devscion.auditforge.domain.model.LoginResponse
+import com.devscion.auditforge.domain.model.UserInfo
 import com.devscion.auditforge.data.network.ApiResult
 import kotlinx.coroutines.delay
 

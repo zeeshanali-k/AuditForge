@@ -1,12 +1,12 @@
 package com.devscion.auditforge.data.repository
 
-import com.devscion.auditforge.data.model.CreateSessionRequest
-import com.devscion.auditforge.data.model.Pagination
-import com.devscion.auditforge.data.model.Session
-import com.devscion.auditforge.data.model.SessionListResponse
-import com.devscion.auditforge.data.model.SessionStatus
-import com.devscion.auditforge.data.model.SessionSummary
-import com.devscion.auditforge.data.model.TargetEnvironment
+import com.devscion.auditforge.domain.model.CreateSessionRequest
+import com.devscion.auditforge.domain.model.Pagination
+import com.devscion.auditforge.domain.model.Session
+import com.devscion.auditforge.domain.model.SessionListResponse
+import com.devscion.auditforge.domain.model.SessionStatus
+import com.devscion.auditforge.domain.model.SessionSummary
+import com.devscion.auditforge.domain.model.TargetEnvironment
 import com.devscion.auditforge.data.network.ApiResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
@@ -91,14 +91,20 @@ class MockSessionRepository : SessionRepository {
         ),
     )
 
-    override suspend fun getSessions(page: Int, pageSize: Int, status: SessionStatus?): ApiResult<SessionListResponse> {
+    override suspend fun getSessions(
+        page: Int,
+        pageSize: Int,
+        status: SessionStatus?
+    ): ApiResult<SessionListResponse> {
         delay(300)
         return mutex.withLock {
             val filtered = if (status == null) sessions else sessions.filter { it.status == status }
             val from = (page - 1) * pageSize
             val to = minOf(from + pageSize, filtered.size)
-            val pageData = if (from in 0 until filtered.size) filtered.subList(from, to) else emptyList()
-            val totalPages = if (filtered.isEmpty()) 1 else (filtered.size + pageSize - 1) / pageSize
+            val pageData =
+                if (from in 0 until filtered.size) filtered.subList(from, to) else emptyList()
+            val totalPages =
+                if (filtered.isEmpty()) 1 else (filtered.size + pageSize - 1) / pageSize
             ApiResult.Success(
                 SessionListResponse(
                     data = pageData.map { it.toSummary() },

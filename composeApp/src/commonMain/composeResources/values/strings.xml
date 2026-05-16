@@ -103,4 +103,52 @@
     <string name="a11y_close">Close</string>
     <string name="a11y_delete_session">Delete session</string>
     <string name="a11y_session_score">Overall compliance score</string>
+
+    <!-- Uploads tab -->
+    <string name="uploads_section_title">Uploads</string>
+    <string name="uploads_empty_title">No files uploaded yet</string>
+    <string name="uploads_empty_description">Upload your source code, API specs, database schemas, or configuration files to begin a scan.</string>
+    <string name="uploads_add_button">Upload file</string>
+    <string name="uploads_drop_zone_title">Drop files here or click to browse</string>
+    <string name="uploads_drop_zone_hint">Supported: Python, JS, Go, YAML, JSON, SQL, config files</string>
+    <string name="uploads_table_col_filename">Filename</string>
+    <string name="uploads_table_col_type">Type</string>
+    <string name="uploads_table_col_size">Size</string>
+    <string name="uploads_table_col_uploaded">Uploaded</string>
+    <string name="upload_type_select_title">Select upload type</string>
+    <string name="upload_type_codebase">Codebase</string>
+    <string name="upload_type_openapi_spec">OpenAPI spec</string>
+    <string name="upload_type_config">Config file</string>
+    <string name="upload_type_db_schema">Database schema</string>
+    <string name="upload_type_env_file">Environment file</string>
+    <string name="upload_type_terraform">Terraform</string>
+    <string name="upload_type_kubernetes">Kubernetes</string>
+    <string name="upload_uploading">Uploading…</string>
+    <string name="upload_delete_action">Delete</string>
+    <string name="upload_confirm_delete_title">Delete upload</string>
+    <string name="upload_confirm_delete_message">Are you sure you want to remove this file from the session?</string>
+    <string name="upload_confirm_delete_confirm">Delete</string>
+    <string name="upload_confirm_delete_cancel">Cancel</string>
+
+    <!-- Policies tab -->
+    <string name="policies_title">Policy packs</string>
+    <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>
+    <string name="policies_empty_title">No policy packs available</string>
+    <string name="policies_empty_description">Policy packs define the compliance rules for your audit session.</string>
+    <string name="policies_no_packs_selected">No packs selected</string>
+    <string name="policies_view_rules">View rules</string>
+    <string name="policies_save_selection">Save selection</string>
+    <string name="policies_framework_all">All frameworks</string>
+    <string name="policies_framework_owasp">OWASP</string>
+    <string name="policies_framework_hipaa">HIPAA</string>
+    <string name="policies_framework_soc2">SOC 2</string>
+    <string name="policies_framework_pci_dss">PCI DSS</string>
+    <string name="policies_framework_gdpr">GDPR</string>
+    <string name="policies_framework_custom">Custom</string>
+    <string name="policies_rule_count">rules</string>
+    <string name="policies_selected_label">selected</string>
+    <string name="policies_severity_critical">Critical</string>
+    <string name="policies_severity_high">High</string>
+    <string name="policies_severity_medium">Medium</string>
+    <string name="policies_severity_low">Low</string>
 </resources>

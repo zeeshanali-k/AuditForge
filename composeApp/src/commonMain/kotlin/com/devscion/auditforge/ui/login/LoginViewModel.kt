@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devscion.auditforge.data.network.ApiResult
 import com.devscion.auditforge.data.storage.TokenStorage
-import com.devscion.auditforge.domain.usecase.LoginUseCase
+import com.devscion.auditforge.domain.usecase.auth.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

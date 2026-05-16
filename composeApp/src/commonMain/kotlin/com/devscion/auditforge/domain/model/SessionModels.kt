@@ -1,21 +1,28 @@
-package com.devscion.auditforge.data.model
+package com.devscion.auditforge.domain.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 enum class SessionStatus {
-    @SerialName("created") Created,
-    @SerialName("scanning") Scanning,
-    @SerialName("completed") Completed,
-    @SerialName("failed") Failed,
+    @SerialName("created")
+    Created,
+    @SerialName("scanning")
+    Scanning,
+    @SerialName("completed")
+    Completed,
+    @SerialName("failed")
+    Failed,
 }
 
 @Serializable
 enum class TargetEnvironment {
-    @SerialName("development") Development,
-    @SerialName("staging") Staging,
-    @SerialName("production") Production,
+    @SerialName("development")
+    Development,
+    @SerialName("staging")
+    Staging,
+    @SerialName("production")
+    Production,
 }
 
 @Serializable

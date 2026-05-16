@@ -1,4 +1,4 @@
-package com.devscion.auditforge.data.model
+package com.devscion.auditforge.domain.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

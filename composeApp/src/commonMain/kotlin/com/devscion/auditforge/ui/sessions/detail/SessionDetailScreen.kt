@@ -1,7 +1,6 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.detail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import auditforge.composeapp.generated.resources.*
-import com.devscion.auditforge.data.model.Session
-import com.devscion.auditforge.data.model.SessionStatus
+import com.devscion.auditforge.domain.model.Session
+import com.devscion.auditforge.domain.model.SessionStatus
+import com.devscion.auditforge.ui.sessions.detail.policies.PoliciesTab
+import com.devscion.auditforge.ui.sessions.detail.uploads.UploadsTab
 import com.devscion.auditforge.ui.theme.AuditForgeColors
 import com.devscion.auditforge.ui.theme.Shape
 import com.devscion.auditforge.ui.theme.Spacing
@@ -35,15 +36,9 @@ fun SessionDetailScreen(
     val colors = MaterialTheme.auditForgeColors
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colors.surfacePrimary),
+        modifier = Modifier.fillMaxSize().background(colors.surfacePrimary),
     ) {
-        SessionDetailTopBar(
-            session = uiState.session,
-            onBack = onBack,
-            colors = colors,
-        )
+        SessionDetailTopBar(session = uiState.session, onBack = onBack, colors = colors)
 
         HorizontalDivider(color = colors.borderDefault, thickness = 1.dp)
 
@@ -54,7 +49,9 @@ fun SessionDetailScreen(
                 onRetry = { viewModel.onIntent(SessionDetailIntent.Load) },
                 colors = colors,
             )
+
             uiState.session != null -> SessionDetailContent(
+                sessionId = sessionId,
                 uiState = uiState,
                 onIntent = viewModel::onIntent,
                 colors = colors,
@@ -70,10 +67,7 @@ private fun SessionDetailTopBar(
     colors: AuditForgeColors,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .background(colors.surfacePrimary)
+        modifier = Modifier.fillMaxWidth().height(56.dp).background(colors.surfacePrimary)
             .padding(horizontal = Spacing.xl),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.md),
@@ -83,27 +77,25 @@ private fun SessionDetailTopBar(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(Res.string.session_detail_back),
                 tint = colors.textSecondary,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(20.dp)
             )
         }
-
         if (session != null) {
             Text(
                 text = session.name,
                 style = MaterialTheme.typography.titleMedium,
                 color = colors.textPrimary,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             StatusBadge(status = session.status, colors = colors)
-            session.overallScore?.let { score ->
-                ScoreBadge(score = score, colors = colors)
-            }
+            session.overallScore?.let { score -> ScoreBadge(score = score, colors = colors) }
         }
     }
 }
 
 @Composable
 private fun SessionDetailContent(
+    sessionId: String,
     uiState: SessionDetailUiState,
     onIntent: (SessionDetailIntent) -> Unit,
     colors: AuditForgeColors,
@@ -126,7 +118,7 @@ private fun SessionDetailContent(
                     text = {
                         Text(
                             text = stringResource(tabLabel(tab)),
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.labelLarge
                         )
                     },
                     selectedContentColor = colors.accentDefault,
@@ -135,29 +127,35 @@ private fun SessionDetailContent(
             }
         }
 
-        TabPlaceholder(tab = uiState.selectedTab, colors = colors)
+        TabContent(tab = uiState.selectedTab, sessionId = sessionId, colors = colors)
+    }
+}
+
+@Composable
+private fun TabContent(tab: SessionDetailTab, sessionId: String, colors: AuditForgeColors) {
+    when (tab) {
+        SessionDetailTab.Uploads -> UploadsTab(sessionId = sessionId, colors = colors)
+        SessionDetailTab.Policies -> PoliciesTab(sessionId = sessionId, colors = colors)
+        else -> TabPlaceholder(tab = tab, colors = colors)
     }
 }
 
 @Composable
 private fun TabPlaceholder(tab: SessionDetailTab, colors: AuditForgeColors) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(Spacing.sm)
         ) {
             Text(
                 text = stringResource(tabLabel(tab)),
                 style = MaterialTheme.typography.titleMedium,
-                color = colors.textPrimary,
+                color = colors.textPrimary
             )
             Text(
                 text = stringResource(Res.string.session_detail_placeholder),
                 style = MaterialTheme.typography.bodyMedium,
-                color = colors.textSecondary,
+                color = colors.textSecondary
             )
         }
     }
@@ -168,13 +166,13 @@ private fun LoadingState(colors: AuditForgeColors) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
             CircularProgressIndicator(color = colors.accentDefault)
             Text(
                 text = stringResource(Res.string.session_detail_loading),
                 style = MaterialTheme.typography.bodyMedium,
-                color = colors.textSecondary,
+                color = colors.textSecondary
             )
         }
     }
@@ -185,12 +183,12 @@ private fun ErrorState(message: String, onRetry: () -> Unit, colors: AuditForgeC
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg)
         ) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = colors.severityCritical,
+                color = colors.severityCritical
             )
             OutlinedButton(
                 onClick = onRetry,
@@ -207,10 +205,7 @@ private fun ErrorState(message: String, onRetry: () -> Unit, colors: AuditForgeC
 @Composable
 fun StatusBadge(status: SessionStatus, colors: AuditForgeColors) {
     val (labelRes, containerColor, contentColor) = statusStyle(status, colors)
-    Surface(
-        shape = RoundedCornerShape(Shape.badge),
-        color = containerColor,
-    ) {
+    Surface(shape = RoundedCornerShape(Shape.badge), color = containerColor) {
         Text(
             text = stringResource(labelRes),
             style = MaterialTheme.typography.labelSmall,
@@ -227,10 +222,7 @@ fun ScoreBadge(score: Int, colors: AuditForgeColors) {
         score >= 50 -> colors.severityMedium
         else -> colors.severityCritical
     }
-    Surface(
-        shape = RoundedCornerShape(Shape.badge),
-        color = color.copy(alpha = 0.12f),
-    ) {
+    Surface(shape = RoundedCornerShape(Shape.badge), color = color.copy(alpha = 0.12f)) {
         Text(
             text = score.toString(),
             style = MaterialTheme.typography.labelLarge,
@@ -240,15 +232,39 @@ fun ScoreBadge(score: Int, colors: AuditForgeColors) {
     }
 }
 
-private data class StatusStyle(val labelRes: StringResource, val containerColor: androidx.compose.ui.graphics.Color, val contentColor: androidx.compose.ui.graphics.Color)
+private data class StatusStyle(
+    val labelRes: StringResource,
+    val containerColor: androidx.compose.ui.graphics.Color,
+    val contentColor: androidx.compose.ui.graphics.Color
+)
 
 @Composable
-private fun statusStyle(status: SessionStatus, colors: AuditForgeColors): StatusStyle = when (status) {
-    SessionStatus.Created -> StatusStyle(Res.string.status_created, colors.borderDefault, colors.textSecondary)
-    SessionStatus.Scanning -> StatusStyle(Res.string.status_scanning, colors.accentDefault.copy(alpha = 0.12f), colors.accentDefault)
-    SessionStatus.Completed -> StatusStyle(Res.string.status_completed, colors.severityLow.copy(alpha = 0.12f), colors.severityLow)
-    SessionStatus.Failed -> StatusStyle(Res.string.status_failed, colors.severityCritical.copy(alpha = 0.12f), colors.severityCritical)
-}
+private fun statusStyle(status: SessionStatus, colors: AuditForgeColors): StatusStyle =
+    when (status) {
+        SessionStatus.Created -> StatusStyle(
+            Res.string.status_created,
+            colors.borderDefault,
+            colors.textSecondary
+        )
+
+        SessionStatus.Scanning -> StatusStyle(
+            Res.string.status_scanning,
+            colors.accentDefault.copy(alpha = 0.12f),
+            colors.accentDefault
+        )
+
+        SessionStatus.Completed -> StatusStyle(
+            Res.string.status_completed,
+            colors.severityLow.copy(alpha = 0.12f),
+            colors.severityLow
+        )
+
+        SessionStatus.Failed -> StatusStyle(
+            Res.string.status_failed,
+            colors.severityCritical.copy(alpha = 0.12f),
+            colors.severityCritical
+        )
+    }
 
 private fun tabLabel(tab: SessionDetailTab): StringResource = when (tab) {
     SessionDetailTab.Uploads -> Res.string.session_detail_tab_uploads

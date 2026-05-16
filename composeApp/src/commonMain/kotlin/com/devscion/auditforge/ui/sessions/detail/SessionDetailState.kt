@@ -1,6 +1,6 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.detail
 
-import com.devscion.auditforge.data.model.Session
+import com.devscion.auditforge.domain.model.Session
 
 enum class SessionDetailTab { Uploads, Policies, Scans, Findings, Reports, AuditTrail }
 

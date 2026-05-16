@@ -1,7 +1,7 @@
 package com.devscion.auditforge.data.network
 
-import com.devscion.auditforge.data.model.LoginRequest
-import com.devscion.auditforge.data.model.LoginResponse
+import com.devscion.auditforge.domain.model.LoginRequest
+import com.devscion.auditforge.domain.model.LoginResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -20,7 +20,10 @@ class AuthApiService(private val httpClient: AuditForgeHttpClient) {
                 HttpStatusCode.OK -> ApiResult.Success(response.body())
                 HttpStatusCode.Unauthorized -> ApiResult.Error("Invalid email or password", 401)
                 HttpStatusCode.UnprocessableEntity -> ApiResult.Error("Invalid request format", 422)
-                else -> ApiResult.Error("Sign in failed (${response.status.value})", response.status.value)
+                else -> ApiResult.Error(
+                    "Sign in failed (${response.status.value})",
+                    response.status.value
+                )
             }
         } catch (e: Exception) {
             ApiResult.NetworkError

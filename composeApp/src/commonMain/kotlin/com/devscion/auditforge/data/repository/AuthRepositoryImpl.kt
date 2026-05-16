@@ -1,6 +1,6 @@
 package com.devscion.auditforge.data.repository
 
-import com.devscion.auditforge.data.model.LoginResponse
+import com.devscion.auditforge.domain.model.LoginResponse
 import com.devscion.auditforge.data.network.ApiResult
 import com.devscion.auditforge.data.network.AuthApiService
 

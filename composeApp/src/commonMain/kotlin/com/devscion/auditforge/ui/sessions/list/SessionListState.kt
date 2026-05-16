@@ -1,9 +1,9 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.list
 
-import com.devscion.auditforge.data.model.Pagination
-import com.devscion.auditforge.data.model.SessionStatus
-import com.devscion.auditforge.data.model.SessionSummary
-import com.devscion.auditforge.data.model.TargetEnvironment
+import com.devscion.auditforge.domain.model.Pagination
+import com.devscion.auditforge.domain.model.SessionStatus
+import com.devscion.auditforge.domain.model.SessionSummary
+import com.devscion.auditforge.domain.model.TargetEnvironment
 
 data class SessionListUiState(
     val sessions: List<SessionSummary> = emptyList(),
@@ -24,7 +24,7 @@ data class SessionListUiState(
 ) {
     val filteredSessions: List<SessionSummary>
         get() = if (searchQuery.isBlank()) sessions
-                else sessions.filter { it.name.contains(searchQuery, ignoreCase = true) }
+        else sessions.filter { it.name.contains(searchQuery, ignoreCase = true) }
 
     val hasNextPage: Boolean
         get() = pagination != null && pagination.page < pagination.totalPages

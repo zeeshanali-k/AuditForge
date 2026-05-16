@@ -1,6 +1,5 @@
-package com.devscion.auditforge.ui.sessions
+package com.devscion.auditforge.ui.sessions.list
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,11 +10,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import auditforge.composeapp.generated.resources.*
-import com.devscion.auditforge.data.model.TargetEnvironment
+import com.devscion.auditforge.domain.model.TargetEnvironment
 import com.devscion.auditforge.ui.theme.AuditForgeColors
 import com.devscion.auditforge.ui.theme.Shape
 import com.devscion.auditforge.ui.theme.Spacing
-import com.devscion.auditforge.ui.theme.auditForgeColors
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -50,19 +48,25 @@ fun CreateSessionDialog(
                     CircularProgressIndicator(
                         modifier = Modifier.size(14.dp),
                         color = colors.textOnAccent,
-                        strokeWidth = 2.dp,
+                        strokeWidth = 2.dp
                     )
                     Spacer(modifier = Modifier.width(Spacing.sm))
-                    Text(stringResource(Res.string.create_session_submitting), style = MaterialTheme.typography.labelLarge)
+                    Text(
+                        stringResource(Res.string.create_session_submitting),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 } else {
-                    Text(stringResource(Res.string.create_session_submit), style = MaterialTheme.typography.labelLarge)
+                    Text(
+                        stringResource(Res.string.create_session_submit),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
             }
         },
         dismissButton = {
             TextButton(
                 onClick = { onIntent(SessionListIntent.HideCreateDialog) },
-                enabled = !uiState.isCreating,
+                enabled = !uiState.isCreating
             ) {
                 Text(
                     text = stringResource(Res.string.create_session_cancel),
@@ -84,15 +88,15 @@ private fun CreateSessionForm(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.lg)) {
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            DialogFieldLabel(stringResource(Res.string.create_session_name_label), colors)
+            FieldLabel(stringResource(Res.string.create_session_name_label), colors)
             OutlinedTextField(
                 value = uiState.newSessionName,
                 onValueChange = { onIntent(SessionListIntent.UpdateNewName(it)) },
                 placeholder = {
                     Text(
-                        text = stringResource(Res.string.create_session_name_placeholder),
+                        stringResource(Res.string.create_session_name_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = colors.textTertiary,
+                        color = colors.textTertiary
                     )
                 },
                 singleLine = true,
@@ -100,15 +104,15 @@ private fun CreateSessionForm(
                 supportingText = uiState.nameValidationError?.let { key ->
                     {
                         Text(
-                            text = stringResource(nameValidationErrorRes(key)),
+                            stringResource(nameValidationErrorRes(key)),
                             color = colors.severityCritical,
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Next
                 ),
                 enabled = !uiState.isCreating,
                 shape = RoundedCornerShape(Shape.input),
@@ -126,15 +130,15 @@ private fun CreateSessionForm(
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            DialogFieldLabel(stringResource(Res.string.create_session_description_label), colors)
+            FieldLabel(stringResource(Res.string.create_session_description_label), colors)
             OutlinedTextField(
                 value = uiState.newSessionDescription,
                 onValueChange = { onIntent(SessionListIntent.UpdateNewDescription(it)) },
                 placeholder = {
                     Text(
-                        text = stringResource(Res.string.create_session_description_placeholder),
+                        stringResource(Res.string.create_session_description_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = colors.textTertiary,
+                        color = colors.textTertiary
                     )
                 },
                 minLines = 3,
@@ -154,12 +158,12 @@ private fun CreateSessionForm(
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            DialogFieldLabel(stringResource(Res.string.create_session_environment_label), colors)
+            FieldLabel(stringResource(Res.string.create_session_environment_label), colors)
             EnvironmentSelector(
                 selected = uiState.newSessionEnvironment,
                 onSelect = { onIntent(SessionListIntent.UpdateNewEnvironment(it)) },
                 enabled = !uiState.isCreating,
-                colors = colors,
+                colors = colors
             )
         }
     }
@@ -181,8 +185,8 @@ private fun EnvironmentSelector(
                 enabled = enabled,
                 label = {
                     Text(
-                        text = stringResource(environmentLabel(env)),
-                        style = MaterialTheme.typography.labelMedium,
+                        stringResource(environmentLabel(env)),
+                        style = MaterialTheme.typography.labelMedium
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -202,12 +206,8 @@ private fun EnvironmentSelector(
 }
 
 @Composable
-private fun DialogFieldLabel(text: String, colors: AuditForgeColors) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelMedium,
-        color = colors.textSecondary,
-    )
+private fun FieldLabel(text: String, colors: AuditForgeColors) {
+    Text(text = text, style = MaterialTheme.typography.labelMedium, color = colors.textSecondary)
 }
 
 @Composable
