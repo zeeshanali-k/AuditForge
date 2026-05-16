@@ -16,6 +16,7 @@ import auditforge.composeapp.generated.resources.*
 import com.devscion.auditforge.domain.model.Session
 import com.devscion.auditforge.domain.model.SessionStatus
 import com.devscion.auditforge.ui.sessions.detail.policies.PoliciesTab
+import com.devscion.auditforge.ui.sessions.detail.scans.ScansTab
 import com.devscion.auditforge.ui.sessions.detail.uploads.UploadsTab
 import com.devscion.auditforge.ui.theme.AuditForgeColors
 import com.devscion.auditforge.ui.theme.Shape
@@ -136,6 +137,7 @@ private fun TabContent(tab: SessionDetailTab, sessionId: String, colors: AuditFo
     when (tab) {
         SessionDetailTab.Uploads -> UploadsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Policies -> PoliciesTab(sessionId = sessionId, colors = colors)
+        SessionDetailTab.Scans -> ScansTab(sessionId = sessionId, colors = colors)
         else -> TabPlaceholder(tab = tab, colors = colors)
     }
 }

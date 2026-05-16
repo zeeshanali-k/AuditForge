@@ -4,16 +4,20 @@ import com.devscion.auditforge.AppFlavor
 import com.devscion.auditforge.FilePicker
 import com.devscion.auditforge.data.network.AuthApiService
 import com.devscion.auditforge.data.network.PolicyApiService
+import com.devscion.auditforge.data.network.ScanApiService
 import com.devscion.auditforge.data.network.SessionApiService
 import com.devscion.auditforge.data.network.UploadApiService
 import com.devscion.auditforge.data.repository.AuthRepository
 import com.devscion.auditforge.data.repository.AuthRepositoryImpl
 import com.devscion.auditforge.data.repository.MockAuthRepository
 import com.devscion.auditforge.data.repository.MockPolicyRepository
+import com.devscion.auditforge.data.repository.MockScanRepository
 import com.devscion.auditforge.data.repository.MockSessionRepository
 import com.devscion.auditforge.data.repository.MockUploadRepository
 import com.devscion.auditforge.data.repository.PolicyRepository
 import com.devscion.auditforge.data.repository.PolicyRepositoryImpl
+import com.devscion.auditforge.data.repository.ScanRepository
+import com.devscion.auditforge.data.repository.ScanRepositoryImpl
 import com.devscion.auditforge.data.repository.SessionRepository
 import com.devscion.auditforge.data.repository.SessionRepositoryImpl
 import com.devscion.auditforge.data.repository.UploadRepository
@@ -73,6 +77,11 @@ class AppModule {
     fun providePolicyRepository(policyApiService: PolicyApiService): PolicyRepository =
         if (AppFlavor.USE_MOCK_DATA) MockPolicyRepository()
         else PolicyRepositoryImpl(policyApiService)
+
+    @Singleton
+    fun provideScanRepository(scanApiService: ScanApiService): ScanRepository =
+        if (AppFlavor.USE_MOCK_DATA) MockScanRepository()
+        else ScanRepositoryImpl(scanApiService)
 
     @Factory
     fun provideFilePicker(): FilePicker = FilePicker()

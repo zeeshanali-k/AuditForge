@@ -130,6 +130,33 @@
     <string name="upload_confirm_delete_confirm">Delete</string>
     <string name="upload_confirm_delete_cancel">Cancel</string>
 
+    <!-- Scans tab -->
+    <string name="scan_select_packs_title">Select policy packs</string>
+    <string name="scan_select_packs_description">Choose which compliance policy packs to apply to this scan. All packs are selected by default.</string>
+    <string name="scan_no_packs_available">No policy packs available. Configure them in the Policies tab.</string>
+    <string name="scan_run_button">Run scan</string>
+    <string name="scan_run_hint_select_packs">Select at least one policy pack to run the scan.</string>
+    <string name="scan_in_progress_title">Scan in progress</string>
+    <string name="scan_preparing">Preparing…</string>
+    <string name="scan_status_queued">Queued</string>
+    <string name="scan_status_running">Running</string>
+    <string name="scan_status_completed">Completed</string>
+    <string name="scan_status_failed">Failed</string>
+    <string name="scan_status_cancelled">Cancelled</string>
+    <string name="scan_cancel_button">Cancel scan</string>
+    <string name="scan_severity_critical">Critical</string>
+    <string name="scan_severity_high">High</string>
+    <string name="scan_severity_medium">Medium</string>
+    <string name="scan_severity_low">Low</string>
+    <string name="scan_live_findings_title">Live findings</string>
+    <string name="scan_complete_title">Scan complete</string>
+    <string name="scan_complete_findings_label">findings</string>
+    <string name="scan_complete_score_label">score</string>
+    <string name="scan_view_findings_button">View findings</string>
+    <string name="scan_run_again_button">Run again</string>
+    <string name="scan_error_in_progress">A scan is already running for this session.</string>
+    <string name="scan_error_no_uploads">Upload at least one file before scanning.</string>
+
     <!-- Policies tab -->
     <string name="policies_title">Policy packs</string>
     <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>
