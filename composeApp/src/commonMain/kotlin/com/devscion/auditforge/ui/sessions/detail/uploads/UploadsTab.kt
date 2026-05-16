@@ -3,14 +3,45 @@ package com.devscion.auditforge.ui.sessions.detail.uploads
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Hub
+import androidx.compose.material.icons.filled.TableChart
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,7 +56,31 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import auditforge.composeapp.generated.resources.*
+import auditforge.composeapp.generated.resources.Res
+import auditforge.composeapp.generated.resources.a11y_close
+import auditforge.composeapp.generated.resources.create_session_cancel
+import auditforge.composeapp.generated.resources.upload_confirm_delete_cancel
+import auditforge.composeapp.generated.resources.upload_confirm_delete_confirm
+import auditforge.composeapp.generated.resources.upload_confirm_delete_message
+import auditforge.composeapp.generated.resources.upload_confirm_delete_title
+import auditforge.composeapp.generated.resources.upload_delete_action
+import auditforge.composeapp.generated.resources.upload_type_codebase
+import auditforge.composeapp.generated.resources.upload_type_config
+import auditforge.composeapp.generated.resources.upload_type_db_schema
+import auditforge.composeapp.generated.resources.upload_type_env_file
+import auditforge.composeapp.generated.resources.upload_type_kubernetes
+import auditforge.composeapp.generated.resources.upload_type_openapi_spec
+import auditforge.composeapp.generated.resources.upload_type_select_title
+import auditforge.composeapp.generated.resources.upload_type_terraform
+import auditforge.composeapp.generated.resources.upload_uploading
+import auditforge.composeapp.generated.resources.uploads_drop_zone_hint
+import auditforge.composeapp.generated.resources.uploads_drop_zone_title
+import auditforge.composeapp.generated.resources.uploads_empty_description
+import auditforge.composeapp.generated.resources.uploads_empty_title
+import auditforge.composeapp.generated.resources.uploads_table_col_filename
+import auditforge.composeapp.generated.resources.uploads_table_col_size
+import auditforge.composeapp.generated.resources.uploads_table_col_type
+import auditforge.composeapp.generated.resources.uploads_table_col_uploaded
 import com.devscion.auditforge.domain.model.UploadSummary
 import com.devscion.auditforge.domain.model.UploadType
 import com.devscion.auditforge.ui.theme.AuditForgeColors
@@ -531,5 +586,10 @@ private fun uploadTypeLabel(type: UploadType): StringResource = when (type) {
 private fun formatFileSize(bytes: Long): String = when {
     bytes < 1_024 -> "$bytes B"
     bytes < 1_048_576 -> "${bytes / 1_024} KB"
-    else -> "${"%.1f".format(bytes / 1_048_576.0)} MB"
+    else -> {
+        val mb = bytes / 1_048_576.0
+        val wholePart = mb.toInt()
+        val fractionalPart = ((mb - wholePart) * 10).toInt()
+        "$wholePart.$fractionalPart MB"
+    }
 }

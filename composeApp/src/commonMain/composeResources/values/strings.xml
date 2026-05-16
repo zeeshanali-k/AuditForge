@@ -193,6 +193,35 @@
     <string name="finding_detail_update_status">Update status</string>
     <string name="finding_detail_comment_placeholder">Add a note (optional)…</string>
 
+    <!-- Reports tab -->
+    <string name="reports_page_title">Reports</string>
+    <string name="reports_generate_button">Generate report</string>
+    <string name="reports_empty_title">No reports yet</string>
+    <string name="reports_empty_description">Generate your first report to share with auditors.</string>
+    <string name="reports_col_format">Format</string>
+    <string name="reports_col_generated">Generated</string>
+    <string name="reports_col_findings">Findings</string>
+    <string name="reports_col_score">Score</string>
+    <string name="reports_col_status">Status</string>
+    <string name="reports_download_action">Download</string>
+    <string name="reports_status_generating">Generating</string>
+    <string name="reports_status_ready">Ready</string>
+    <string name="reports_status_failed">Failed</string>
+    <string name="reports_signed">Signed</string>
+
+    <!-- Generate report modal -->
+    <string name="generate_report_title">Generate report</string>
+    <string name="generate_report_format_label">Format</string>
+    <string name="generate_report_framework_label">Compliance framework</string>
+    <string name="generate_report_framework_all">All frameworks</string>
+    <string name="generate_report_include_resolved">Include resolved findings</string>
+    <string name="generate_report_include_remediation">Include remediation guidance</string>
+    <string name="generate_report_sign">Sign report</string>
+    <string name="generate_report_cancel">Cancel</string>
+    <string name="generate_report_submit">Generate</string>
+    <string name="generate_report_generating">Generating…</string>
+    <string name="generate_report_download">Download</string>
+
     <!-- Policies tab -->
     <string name="policies_title">Policy packs</string>
     <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>

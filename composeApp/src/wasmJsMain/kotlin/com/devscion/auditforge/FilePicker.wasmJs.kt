@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalWasmJsInterop::class)
+
 package com.devscion.auditforge
 
 import kotlinx.browser.document
@@ -29,9 +31,9 @@ actual class FilePicker actual constructor() {
                                 resumed = true
                                 val result = reader.result
                                 if (result != null) {
-                                    val jsArr = uint8ArrayFromBuffer(result.unsafeCast<JsAny>())
+                                    val jsArr = uint8ArrayFromBuffer(result.unsafeCast())
                                     val bytes = ByteArray(jsArr.length) { i ->
-                                        jsArr[i].toInt().and(0xFF).toByte()
+                                        jsArr[i]!!.toInt().and(0xFF).toByte()
                                     }
                                     cont.resume(
                                         PickedFile(
