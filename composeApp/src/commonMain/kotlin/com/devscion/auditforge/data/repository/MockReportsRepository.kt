@@ -15,7 +15,10 @@ class MockReportsRepository : ReportsRepository {
     private val reports: MutableMap<String, MutableList<Report>> = mutableMapOf()
     private var idCounter = 1
 
-    override suspend fun generateReport(sessionId: String, request: GenerateReportRequest): ApiResult<Report> {
+    override suspend fun generateReport(
+        sessionId: String,
+        request: GenerateReportRequest
+    ): ApiResult<Report> {
         delay(400)
         return mutex.withLock {
             val report = Report(
@@ -35,7 +38,8 @@ class MockReportsRepository : ReportsRepository {
     override suspend fun getReport(sessionId: String, reportId: String): ApiResult<Report> {
         delay(300)
         return mutex.withLock {
-            val list = reports[sessionId] ?: return@withLock ApiResult.Error("Report not found", 404)
+            val list =
+                reports[sessionId] ?: return@withLock ApiResult.Error("Report not found", 404)
             val idx = list.indexOfFirst { it.id == reportId }
             if (idx < 0) return@withLock ApiResult.Error("Report not found", 404)
             val existing = list[idx]
@@ -55,13 +59,18 @@ class MockReportsRepository : ReportsRepository {
     override suspend fun listReports(sessionId: String): ApiResult<ReportListResponse> {
         delay(350)
         return mutex.withLock {
-            ApiResult.Success(ReportListResponse(data = reports.getOrDefault(sessionId, mutableListOf()).toList()))
+            ApiResult.Success(
+                ReportListResponse(
+                    data = (reports[sessionId] ?: mutableListOf()).toList()
+                )
+            )
         }
     }
 
     override suspend fun downloadReport(sessionId: String, reportId: String): ApiResult<ByteArray> {
         delay(500)
-        val mockBytes = "%PDF-1.4\n%Mock AuditForge report $reportId\n1 0 obj<</Type /Catalog>>endobj".encodeToByteArray()
+        val mockBytes =
+            "%PDF-1.4\n%Mock AuditForge report $reportId\n1 0 obj<</Type /Catalog>>endobj".encodeToByteArray()
         return ApiResult.Success(mockBytes)
     }
 

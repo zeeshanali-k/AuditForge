@@ -3,7 +3,20 @@ package com.devscion.auditforge.ui.sessions.list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,15 +25,81 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Article
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import auditforge.composeapp.generated.resources.*
+import auditforge.composeapp.generated.resources.Res
+import auditforge.composeapp.generated.resources.a11y_search
+import auditforge.composeapp.generated.resources.a11y_user_menu
+import auditforge.composeapp.generated.resources.app_name
+import auditforge.composeapp.generated.resources.delete_session_cancel
+import auditforge.composeapp.generated.resources.delete_session_confirm
+import auditforge.composeapp.generated.resources.delete_session_message
+import auditforge.composeapp.generated.resources.delete_session_title
+import auditforge.composeapp.generated.resources.nav_policies
+import auditforge.composeapp.generated.resources.nav_sessions
+import auditforge.composeapp.generated.resources.nav_settings
+import auditforge.composeapp.generated.resources.session_created_label
+import auditforge.composeapp.generated.resources.session_delete_action
+import auditforge.composeapp.generated.resources.session_detail_more_actions
+import auditforge.composeapp.generated.resources.session_detail_placeholder
+import auditforge.composeapp.generated.resources.session_findings
+import auditforge.composeapp.generated.resources.sessions_account
+import auditforge.composeapp.generated.resources.sessions_create_button
+import auditforge.composeapp.generated.resources.sessions_empty_cta
+import auditforge.composeapp.generated.resources.sessions_empty_description
+import auditforge.composeapp.generated.resources.sessions_empty_title
+import auditforge.composeapp.generated.resources.sessions_filter_all
+import auditforge.composeapp.generated.resources.sessions_filter_completed
+import auditforge.composeapp.generated.resources.sessions_filter_created
+import auditforge.composeapp.generated.resources.sessions_filter_failed
+import auditforge.composeapp.generated.resources.sessions_filter_scanning
+import auditforge.composeapp.generated.resources.sessions_of
+import auditforge.composeapp.generated.resources.sessions_page_title
+import auditforge.composeapp.generated.resources.sessions_results
+import auditforge.composeapp.generated.resources.sessions_search_placeholder
+import auditforge.composeapp.generated.resources.sessions_sign_out
 import com.devscion.auditforge.domain.model.SessionStatus
 import com.devscion.auditforge.domain.model.SessionSummary
 import com.devscion.auditforge.ui.policies.PolicyLibraryContent
@@ -35,7 +114,7 @@ import com.devscion.auditforge.ui.theme.auditForgeColors
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-enum class NavDestination { Sessions, Policies, AuditTrail, Settings }
+enum class NavDestination { Sessions, Policies, Settings }
 
 @Composable
 fun SessionListScreen(
@@ -81,8 +160,6 @@ fun SessionListScreen(
                     )
 
                     NavDestination.Policies -> PolicyLibraryContent(colors = colors)
-
-                    NavDestination.AuditTrail -> NavPlaceholder(dest = NavDestination.AuditTrail, colors = colors)
 
                     NavDestination.Settings -> SettingsContent(
                         currentTheme = currentTheme,
@@ -728,7 +805,6 @@ private fun navLabel(dest: NavDestination): String = stringResource(
     when (dest) {
         NavDestination.Sessions -> Res.string.nav_sessions
         NavDestination.Policies -> Res.string.nav_policies
-        NavDestination.AuditTrail -> Res.string.nav_audit_trail
         NavDestination.Settings -> Res.string.nav_settings
     }
 )
@@ -736,7 +812,6 @@ private fun navLabel(dest: NavDestination): String = stringResource(
 private fun navIcon(dest: NavDestination) = when (dest) {
     NavDestination.Sessions -> Icons.AutoMirrored.Filled.Article
     NavDestination.Policies -> Icons.Default.Security
-    NavDestination.AuditTrail -> Icons.Default.History
     NavDestination.Settings -> Icons.Default.Settings
 }
 
