@@ -14,6 +14,9 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+// Version — set auditforge.version in gradle.properties
+val auditForgeVersion: String = (project.findProperty("auditforge.version") as? String) ?: "1.0.0"
+
 // Build flavor: pass -Pflavor=prod for real API. Default is dev (mock data).
 val auditForgeFlavor: String = (project.findProperty("flavor") as? String) ?: "dev"
 val isDevFlavor: Boolean = auditForgeFlavor != "prod"
@@ -126,6 +129,10 @@ tasks.matching { it.name.startsWith("compileKotlin") }.configureEach {
     dependsOn(generateAppFlavor)
 }
 
+tasks.register("printVersion") {
+    doLast { println(auditForgeVersion) }
+}
+
 
 compose.desktop {
     application {
@@ -134,7 +141,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.devscion.auditforge"
-            packageVersion = "1.0.0"
+            packageVersion = auditForgeVersion
         }
     }
 }
