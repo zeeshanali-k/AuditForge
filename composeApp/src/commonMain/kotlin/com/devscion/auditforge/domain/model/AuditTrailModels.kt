@@ -21,6 +21,9 @@ enum class AuditEventType {
     @SerialName("scan_completed")
     ScanCompleted,
 
+    @SerialName("scan_cancelled")
+    ScanCancelled,
+
     @SerialName("finding_created")
     FindingCreated,
 
@@ -43,6 +46,7 @@ fun AuditEventType.toApiParam(): String = when (this) {
     AuditEventType.ReportGenerated -> "report_generated"
     AuditEventType.PolicyChanged -> "policy_changed"
     AuditEventType.UserAction -> "user_action"
+    AuditEventType.ScanCancelled -> "scan_cancelled"
     AuditEventType.ReportRequested -> "report_requested"
 }
 

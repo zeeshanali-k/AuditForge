@@ -935,6 +935,7 @@ private fun eventTypeLabel(type: AuditEventType): String = when (type) {
     AuditEventType.ScanCompleted -> "Scan completed"
     AuditEventType.FindingCreated -> "Finding created"
     AuditEventType.ReportGenerated -> "Report generated"
+    AuditEventType.ScanCancelled -> "Scan cancelled"
     AuditEventType.ReportRequested -> "Report requested"
     AuditEventType.PolicyChanged -> "Policy changed"
     AuditEventType.UserAction -> "User action"
@@ -947,6 +948,7 @@ private fun eventSummary(event: AuditEvent): String {
         AuditEventType.SessionCreated -> str("session_name").ifBlank { "New session" }
         AuditEventType.UploadAdded -> str("filename").ifBlank { "File added" }
         AuditEventType.ScanStarted -> "Scan ${str("scan_id")} started"
+        AuditEventType.ScanCancelled -> "Scan ${str("scan_id")} cancelled"
         AuditEventType.ScanCompleted -> "${str("findings_count")} findings · score ${str("overall_score")}"
         AuditEventType.ReportRequested -> "${str("report_requested")} report requested"
         AuditEventType.FindingCreated -> "[${str("severity")}] ${str("title")}".ifBlank { "Finding created" }
@@ -963,6 +965,7 @@ private fun eventTypeIcon(type: AuditEventType): ImageVector = when (type) {
     AuditEventType.UploadAdded -> Icons.Default.Upload
     AuditEventType.ScanStarted -> Icons.Default.PlayArrow
     AuditEventType.ScanCompleted -> Icons.Default.CheckCircle
+    AuditEventType.ScanCancelled -> Icons.Default.Cancel
     AuditEventType.FindingCreated -> Icons.Default.BugReport
     AuditEventType.ReportRequested -> Icons.Default.Report
     AuditEventType.ReportGenerated -> Icons.Default.Description
@@ -975,6 +978,7 @@ private fun eventTypeColor(type: AuditEventType, colors: AuditForgeColors) = whe
     AuditEventType.SessionCreated -> colors.accentDefault
     AuditEventType.UploadAdded -> colors.accentDefault
     AuditEventType.ScanStarted -> colors.accentDefault
+    AuditEventType.ScanCancelled -> colors.severityHigh
     AuditEventType.ScanCompleted -> colors.severityResolved
     AuditEventType.FindingCreated -> colors.severityHigh
     AuditEventType.ReportGenerated -> colors.severityLow
