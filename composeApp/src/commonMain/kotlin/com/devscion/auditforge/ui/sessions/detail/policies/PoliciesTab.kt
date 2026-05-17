@@ -3,14 +3,41 @@ package com.devscion.auditforge.ui.sessions.detail.policies
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,7 +52,22 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import auditforge.composeapp.generated.resources.*
+import auditforge.composeapp.generated.resources.Res
+import auditforge.composeapp.generated.resources.a11y_close
+import auditforge.composeapp.generated.resources.policies_description
+import auditforge.composeapp.generated.resources.policies_empty_description
+import auditforge.composeapp.generated.resources.policies_empty_title
+import auditforge.composeapp.generated.resources.policies_framework_custom
+import auditforge.composeapp.generated.resources.policies_framework_gdpr
+import auditforge.composeapp.generated.resources.policies_framework_hipaa
+import auditforge.composeapp.generated.resources.policies_framework_owasp
+import auditforge.composeapp.generated.resources.policies_framework_pci_dss
+import auditforge.composeapp.generated.resources.policies_framework_soc2
+import auditforge.composeapp.generated.resources.policies_no_packs_selected
+import auditforge.composeapp.generated.resources.policies_rule_count
+import auditforge.composeapp.generated.resources.policies_save_selection
+import auditforge.composeapp.generated.resources.policies_selected_label
+import auditforge.composeapp.generated.resources.policies_view_rules
 import com.devscion.auditforge.domain.model.PolicyFramework
 import com.devscion.auditforge.domain.model.PolicyPackDetail
 import com.devscion.auditforge.domain.model.PolicyPackSummary
@@ -496,6 +538,7 @@ private fun frameworkColor(framework: PolicyFramework, colors: AuditForgeColors)
         PolicyFramework.SOC2 -> colors.statusSuccess
         PolicyFramework.PCI_DSS -> colors.severityHigh
         PolicyFramework.GDPR -> colors.severityMedium
+        PolicyFramework.NIS2 -> colors.severityMedium//TODO
         PolicyFramework.Custom -> colors.borderStrong
     }
 
@@ -513,5 +556,6 @@ private fun frameworkLabel(framework: PolicyFramework): StringResource = when (f
     PolicyFramework.SOC2 -> Res.string.policies_framework_soc2
     PolicyFramework.PCI_DSS -> Res.string.policies_framework_pci_dss
     PolicyFramework.GDPR -> Res.string.policies_framework_gdpr
+    PolicyFramework.NIS2 -> Res.string.policies_framework_gdpr
     PolicyFramework.Custom -> Res.string.policies_framework_custom
 }

@@ -7,14 +7,22 @@ import kotlinx.serialization.Serializable
 enum class PolicyFramework {
     @SerialName("OWASP")
     OWASP,
+
     @SerialName("HIPAA")
     HIPAA,
+
     @SerialName("SOC2")
     SOC2,
+
     @SerialName("PCI-DSS")
     PCI_DSS,
+
     @SerialName("GDPR")
     GDPR,
+
+    @SerialName("NIS2")
+    NIS2,
+
     @SerialName("custom")
     Custom,
 }
@@ -23,10 +31,13 @@ enum class PolicyFramework {
 enum class RuleSeverity {
     @SerialName("critical")
     Critical,
+
     @SerialName("high")
     High,
+
     @SerialName("medium")
     Medium,
+
     @SerialName("low")
     Low,
 }

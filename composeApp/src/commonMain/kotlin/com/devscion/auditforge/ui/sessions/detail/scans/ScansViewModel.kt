@@ -64,11 +64,16 @@ class ScansViewModel(
                         )
                     }
                 }
+
                 is ApiResult.Error -> _uiState.update {
                     it.copy(isLoading = false, error = result.message)
                 }
+
                 ApiResult.Unauthorized, ApiResult.NetworkError -> _uiState.update {
-                    it.copy(isLoading = false, error = "Failed to load policy packs. Check your connection.")
+                    it.copy(
+                        isLoading = false,
+                        error = "Failed to load policy packs. Check your connection."
+                    )
                 }
             }
         }
@@ -112,11 +117,16 @@ class ScansViewModel(
                     }
                     startObservingProgress(scan.sessionId, scan.id)
                 }
+
                 is ApiResult.Error -> _uiState.update {
                     it.copy(isLoading = false, error = result.message)
                 }
+
                 ApiResult.Unauthorized, ApiResult.NetworkError -> _uiState.update {
-                    it.copy(isLoading = false, error = "Failed to start scan. Check your connection.")
+                    it.copy(
+                        isLoading = false,
+                        error = "Failed to start scan. Check your connection."
+                    )
                 }
             }
         }
@@ -178,13 +188,23 @@ class ScansViewModel(
             progressJob?.cancel()
             when (val result = cancelScanUseCase(sessionId, scan.id)) {
                 is ApiResult.Success -> _uiState.update {
-                    it.copy(isCancelling = false, currentScan = result.data)
+                    it.copy(
+                        isCancelling = false, currentScan = it.currentScan?.copy(
+                            status = result.data.status,
+                            cancelledAt = result.data.cancelledAt,
+                        )
+                    )
                 }
+
                 is ApiResult.Error -> _uiState.update {
                     it.copy(isCancelling = false, error = result.message)
                 }
+
                 ApiResult.Unauthorized, ApiResult.NetworkError -> _uiState.update {
-                    it.copy(isCancelling = false, error = "Failed to cancel scan. Check your connection.")
+                    it.copy(
+                        isCancelling = false,
+                        error = "Failed to cancel scan. Check your connection."
+                    )
                 }
             }
         }

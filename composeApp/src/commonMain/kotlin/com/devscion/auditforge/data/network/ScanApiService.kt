@@ -1,6 +1,7 @@
 package com.devscion.auditforge.data.network
 
 import com.devscion.auditforge.data.storage.TokenStorage
+import com.devscion.auditforge.domain.model.CancelScanResponse
 import com.devscion.auditforge.domain.model.RuleSeverity
 import com.devscion.auditforge.domain.model.Scan
 import com.devscion.auditforge.domain.model.ScanProgressEvent
@@ -44,12 +45,20 @@ class ScanApiService(
         when (response.status) {
             HttpStatusCode.Accepted -> ApiResult.Success(response.body())
             HttpStatusCode.Unauthorized -> ApiResult.Unauthorized
-            HttpStatusCode.Conflict -> ApiResult.Error("A scan is already running for this session", 409)
+            HttpStatusCode.Conflict -> ApiResult.Error(
+                "A scan is already running for this session",
+                409
+            )
+
             HttpStatusCode.UnprocessableEntity -> ApiResult.Error(
                 "Cannot start scan: no uploads or invalid policy packs",
                 422,
             )
-            else -> ApiResult.Error("Failed to start scan (${response.status.value})", response.status.value)
+
+            else -> ApiResult.Error(
+                "Failed to start scan (${response.status.value})",
+                response.status.value
+            )
         }
     } catch (e: Exception) {
         ApiResult.NetworkError
@@ -61,19 +70,25 @@ class ScanApiService(
             HttpStatusCode.OK -> ApiResult.Success(response.body())
             HttpStatusCode.Unauthorized -> ApiResult.Unauthorized
             HttpStatusCode.NotFound -> ApiResult.Error("Scan not found", 404)
-            else -> ApiResult.Error("Failed to load scan (${response.status.value})", response.status.value)
+            else -> ApiResult.Error(
+                "Failed to load scan (${response.status.value})",
+                response.status.value
+            )
         }
     } catch (e: Exception) {
         ApiResult.NetworkError
     }
 
-    suspend fun cancelScan(sessionId: String, scanId: String): ApiResult<Scan> = try {
+    suspend fun cancelScan(sessionId: String, scanId: String): ApiResult<CancelScanResponse> = try {
         val response = http.post("sessions/$sessionId/scans/$scanId/cancel")
         when (response.status) {
             HttpStatusCode.OK -> ApiResult.Success(response.body())
             HttpStatusCode.Unauthorized -> ApiResult.Unauthorized
             HttpStatusCode.NotFound -> ApiResult.Error("Scan not found", 404)
-            else -> ApiResult.Error("Failed to cancel scan (${response.status.value})", response.status.value)
+            else -> ApiResult.Error(
+                "Failed to cancel scan (${response.status.value})",
+                response.status.value
+            )
         }
     } catch (e: Exception) {
         ApiResult.NetworkError
@@ -103,6 +118,7 @@ class ScanApiService(
                         parseSseEvent(currentEvent, data)?.let { emit(it) }
                         if (currentEvent == "completed" || currentEvent == "error") return@flow
                     }
+
                     line.isEmpty() -> currentEvent = null
                 }
             }
@@ -121,45 +137,55 @@ class ScanApiService(
             val result = getScan(sessionId, scanId)
             if (result !is ApiResult.Success) break
             val scan = result.data
-            emit(ScanProgressEvent.Progress(scan.progressPercent, scan.currentStep ?: "", scan.findingsSoFar))
+            emit(
+                ScanProgressEvent.Progress(
+                    scan.progressPercent,
+                    scan.currentStep ?: "",
+                    scan.findingsSoFar
+                )
+            )
             when (scan.status) {
                 ScanStatus.Completed -> {
                     emit(ScanProgressEvent.Completed(scan.id, scan.findingsSoFar, 0))
                     return
                 }
+
                 ScanStatus.Failed -> {
                     emit(ScanProgressEvent.ScanError("SCAN_FAILED", "Scan failed"))
                     return
                 }
+
                 ScanStatus.Cancelled -> return
                 else -> Unit
             }
         }
     }
 
-    private fun parseSseEvent(eventType: String?, data: String): ScanProgressEvent? = when (eventType) {
-        "progress" -> runCatching {
-            val d = json.decodeFromString<SseProgressData>(data)
-            ScanProgressEvent.Progress(d.progressPercent, d.currentStep, d.findingsSoFar)
-        }.getOrNull()
+    private fun parseSseEvent(eventType: String?, data: String): ScanProgressEvent? =
+        when (eventType) {
+            "progress" -> runCatching {
+                val d = json.decodeFromString<SseProgressData>(data)
+                ScanProgressEvent.Progress(d.progressPercent, d.currentStep, d.findingsSoFar)
+            }.getOrNull()
 
-        "finding" -> runCatching {
-            val d = json.decodeFromString<SseFindingData>(data)
-            val severity = RuleSeverity.entries.find { it.name.lowercase() == d.severity.lowercase() }
-                ?: RuleSeverity.Low
-            ScanProgressEvent.Finding(d.id, severity, d.ruleId, d.title)
-        }.getOrNull()
+            "finding" -> runCatching {
+                val d = json.decodeFromString<SseFindingData>(data)
+                val severity =
+                    RuleSeverity.entries.find { it.name.lowercase() == d.severity.lowercase() }
+                        ?: RuleSeverity.Low
+                ScanProgressEvent.Finding(d.id, severity, d.ruleId, d.title)
+            }.getOrNull()
 
-        "completed" -> runCatching {
-            val d = json.decodeFromString<SseCompletedData>(data)
-            ScanProgressEvent.Completed(d.scanId, d.totalFindings, d.overallScore)
-        }.getOrNull()
+            "completed" -> runCatching {
+                val d = json.decodeFromString<SseCompletedData>(data)
+                ScanProgressEvent.Completed(d.scanId, d.totalFindings, d.overallScore)
+            }.getOrNull()
 
-        "error" -> runCatching {
-            val d = json.decodeFromString<SseErrorData>(data)
-            ScanProgressEvent.ScanError(d.code, d.message)
-        }.getOrNull()
+            "error" -> runCatching {
+                val d = json.decodeFromString<SseErrorData>(data)
+                ScanProgressEvent.ScanError(d.code, d.message)
+            }.getOrNull()
 
-        else -> null
-    }
+            else -> null
+        }
 }
