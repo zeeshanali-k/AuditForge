@@ -1,9 +1,3 @@
-import org.gradle.api.DefaultTask
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -15,7 +9,7 @@ plugins {
 }
 
 // Version — set auditforge.version in gradle.properties
-val auditForgeVersion: String = (project.findProperty("auditforge.version") as? String) ?: "1.0.0"
+val auditForgeVersion: String = (project.findProperty("auditforge.version") as? String) ?: "1.0.1"
 
 // Build flavor: pass -Pflavor=prod for real API. Default is dev (mock data).
 val auditForgeFlavor: String = (project.findProperty("flavor") as? String) ?: "dev"

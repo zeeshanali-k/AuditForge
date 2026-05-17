@@ -30,7 +30,7 @@ jobs:
         uses: gradle/gradle-build-action@v3
 
       - name: Build WasmJs web bundle
-        run: ./gradlew :composeApp:wasmJsBrowserDistribution -Pflavor=prod
+        run: ./gradlew :composeApp:wasmJsBrowserDistribution -Pflavor=dev
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

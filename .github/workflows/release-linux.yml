@@ -6,7 +6,34 @@ on:
     tags: [ 'v*' ]
 
 jobs:
+  check-version:
+    if: "!startsWith(github.ref, 'refs/tags/')"
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if version changed
+        id: check
+        run: |
+          CURR=$(grep 'auditforge\.version=' gradle.properties | cut -d= -f2)
+          PREV=$(git show HEAD~1:gradle.properties 2>/dev/null | grep 'auditforge\.version=' | cut -d= -f2 || echo "")
+          if [ "$CURR" != "$PREV" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
   build-and-release:
+    needs: [ check-version ]
+    if: |
+      always() && (
+        startsWith(github.ref, 'refs/tags/') ||
+        needs.check-version.outputs.version_changed == 'true'
+      )
     runs-on: ubuntu-latest
     environment: devscion
     permissions:
