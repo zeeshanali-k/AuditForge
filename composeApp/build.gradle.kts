@@ -9,7 +9,7 @@ plugins {
 }
 
 // Version — set auditforge.version in gradle.properties
-val auditForgeVersion: String = (project.findProperty("auditforge.version") as? String) ?: "1.0.1"
+val auditForgeVersion: String = (project.findProperty("auditforge.version") as? String) ?: "1.0.2"
 
 // Build flavor: pass -Pflavor=prod for real API. Default is dev (mock data).
 val auditForgeFlavor: String = (project.findProperty("flavor") as? String) ?: "dev"
