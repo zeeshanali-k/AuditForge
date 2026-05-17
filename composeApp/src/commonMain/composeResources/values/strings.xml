@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">AuditForge</string>
+    <string name="app_tagline">Compliance audit platform</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Sign in to your account</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_email_placeholder">you@company.com</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_show">Show password</string>
+    <string name="login_password_hide">Hide password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_signing_in">Signing in…</string>
+
+    <!-- Validation errors -->
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Enter a valid email address</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
+    <string name="error_network">Network error. Check your connection.</string>
+    <string name="error_unknown">Something went wrong. Please try again.</string>
+
+    <!-- Navigation -->
+    <string name="nav_sessions">Sessions</string>
+    <string name="nav_policies">Policies</string>
+    <string name="nav_audit_trail">Audit trail</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Session list screen -->
+    <string name="sessions_page_title">Sessions</string>
+    <string name="sessions_create_button">Create session</string>
+    <string name="sessions_account">Account</string>
+    <string name="sessions_sign_out">Sign out</string>
+    <string name="sessions_search_placeholder">Search…</string>
+    <string name="sessions_empty_title">No sessions yet</string>
+    <string name="sessions_empty_description">Create a session to start your first compliance audit.</string>
+    <string name="sessions_empty_cta">Create your first session</string>
+    <string name="sessions_filter_all">All</string>
+    <string name="sessions_filter_created">Created</string>
+    <string name="sessions_filter_scanning">Scanning</string>
+    <string name="sessions_filter_completed">Completed</string>
+    <string name="sessions_filter_failed">Failed</string>
+    <string name="sessions_load_more">Load more</string>
+    <string name="sessions_of">of</string>
+    <string name="sessions_results">results</string>
+
+    <!-- Session status labels -->
+    <string name="status_created">Created</string>
+    <string name="status_scanning">Scanning</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_failed">Failed</string>
+
+    <!-- Session list item -->
+    <string name="session_findings">findings</string>
+    <string name="session_score_label">Score</string>
+    <string name="session_created_label">Created</string>
+    <string name="session_delete_action">Delete</string>
+    <string name="session_view_action">View</string>
+
+    <!-- Delete confirmation dialog -->
+    <string name="delete_session_title">Delete session</string>
+    <string name="delete_session_message">This will permanently delete the session and all associated uploads, findings, and reports. This action cannot be undone.</string>
+    <string name="delete_session_confirm">Delete</string>
+    <string name="delete_session_cancel">Cancel</string>
+
+    <!-- Create session dialog -->
+    <string name="create_session_title">Create session</string>
+    <string name="create_session_name_label">Session name</string>
+    <string name="create_session_name_placeholder">e.g. Q2 2026 compliance audit</string>
+    <string name="create_session_description_label">Description (optional)</string>
+    <string name="create_session_description_placeholder">Describe the purpose of this audit session…</string>
+    <string name="create_session_environment_label">Target environment</string>
+    <string name="create_session_env_development">Development</string>
+    <string name="create_session_env_staging">Staging</string>
+    <string name="create_session_env_production">Production</string>
+    <string name="create_session_cancel">Cancel</string>
+    <string name="create_session_submit">Create session</string>
+    <string name="create_session_submitting">Creating…</string>
+    <string name="error_session_name_required">Session name is required</string>
+    <string name="error_session_name_too_short">Session name must be at least 3 characters</string>
+    <string name="error_session_name_too_long">Session name must be at most 120 characters</string>
+
+    <!-- Session detail screen -->
+    <string name="session_detail_tab_uploads">Uploads</string>
+    <string name="session_detail_tab_policies">Policies</string>
+    <string name="session_detail_tab_scans">Scans</string>
+    <string name="session_detail_tab_findings">Findings</string>
+    <string name="session_detail_tab_reports">Reports</string>
+    <string name="session_detail_tab_audit_trail">Audit trail</string>
+    <string name="session_detail_back">Back to sessions</string>
+    <string name="session_detail_loading">Loading session…</string>
+    <string name="session_detail_not_found">Session not found</string>
+    <string name="session_detail_placeholder">This section will be available in a future release.</string>
+    <string name="session_detail_more_actions">More actions</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_search">Search</string>
+    <string name="a11y_user_menu">User menu</string>
+    <string name="a11y_close">Close</string>
+    <string name="a11y_delete_session">Delete session</string>
+    <string name="a11y_session_score">Overall compliance score</string>
+
+    <!-- Uploads tab -->
+    <string name="uploads_section_title">Uploads</string>
+    <string name="uploads_empty_title">No files uploaded yet</string>
+    <string name="uploads_empty_description">Upload your source code, API specs, database schemas, or configuration files to begin a scan.</string>
+    <string name="uploads_add_button">Upload file</string>
+    <string name="uploads_drop_zone_title">Drop files here or click to browse</string>
+    <string name="uploads_drop_zone_hint">Supported: Python, JS, Go, YAML, JSON, SQL, config files</string>
+    <string name="uploads_table_col_filename">Filename</string>
+    <string name="uploads_table_col_type">Type</string>
+    <string name="uploads_table_col_size">Size</string>
+    <string name="uploads_table_col_uploaded">Uploaded</string>
+    <string name="upload_type_select_title">Select upload type</string>
+    <string name="upload_type_codebase">Codebase</string>
+    <string name="upload_type_openapi_spec">OpenAPI spec</string>
+    <string name="upload_type_config">Config file</string>
+    <string name="upload_type_db_schema">Database schema</string>
+    <string name="upload_type_env_file">Environment file</string>
+    <string name="upload_type_terraform">Terraform</string>
+    <string name="upload_type_kubernetes">Kubernetes</string>
+    <string name="upload_uploading">Uploading…</string>
+    <string name="upload_delete_action">Delete</string>
+    <string name="upload_confirm_delete_title">Delete upload</string>
+    <string name="upload_confirm_delete_message">Are you sure you want to remove this file from the session?</string>
+    <string name="upload_confirm_delete_confirm">Delete</string>
+    <string name="upload_confirm_delete_cancel">Cancel</string>
+
+    <!-- Scans tab -->
+    <string name="scan_select_packs_title">Select policy packs</string>
+    <string name="scan_select_packs_description">Choose which compliance policy packs to apply to this scan. All packs are selected by default.</string>
+    <string name="scan_no_packs_available">No policy packs available. Configure them in the Policies tab.</string>
+    <string name="scan_run_button">Run scan</string>
+    <string name="scan_run_hint_select_packs">Select at least one policy pack to run the scan.</string>
+    <string name="scan_in_progress_title">Scan in progress</string>
+    <string name="scan_preparing">Preparing…</string>
+    <string name="scan_status_queued">Queued</string>
+    <string name="scan_status_running">Running</string>
+    <string name="scan_status_completed">Completed</string>
+    <string name="scan_status_failed">Failed</string>
+    <string name="scan_status_cancelled">Cancelled</string>
+    <string name="scan_cancel_button">Cancel scan</string>
+    <string name="scan_severity_critical">Critical</string>
+    <string name="scan_severity_high">High</string>
+    <string name="scan_severity_medium">Medium</string>
+    <string name="scan_severity_low">Low</string>
+    <string name="scan_live_findings_title">Live findings</string>
+    <string name="scan_complete_title">Scan complete</string>
+    <string name="scan_complete_findings_label">findings</string>
+    <string name="scan_complete_score_label">score</string>
+    <string name="scan_view_findings_button">View findings</string>
+    <string name="scan_run_again_button">Run again</string>
+    <string name="scan_error_in_progress">A scan is already running for this session.</string>
+    <string name="scan_error_no_uploads">Upload at least one file before scanning.</string>
+
+    <!-- Findings tab -->
+    <string name="findings_score_label">/ 100</string>
+    <string name="findings_total_label">findings</string>
+    <string name="findings_severity_critical">Critical</string>
+    <string name="findings_severity_high">High</string>
+    <string name="findings_severity_medium">Medium</string>
+    <string name="findings_severity_low">Low</string>
+    <string name="findings_col_severity">Severity</string>
+    <string name="findings_col_title">Title</string>
+    <string name="findings_col_category">Category</string>
+    <string name="findings_col_location">Location</string>
+    <string name="findings_col_status">Status</string>
+    <string name="findings_col_detected">Detected</string>
+    <string name="findings_filter_all_status">All statuses</string>
+    <string name="findings_filter_all_category">All categories</string>
+    <string name="findings_search_placeholder">Search findings…</string>
+    <string name="findings_clear_filters">Clear filters</string>
+    <string name="findings_empty_title">No findings yet</string>
+    <string name="findings_empty_description">Run a scan to detect compliance issues in your uploaded artifacts.</string>
+    <string name="findings_empty_filtered_title">No findings match the current filters</string>
+
+    <!-- Finding detail dialog -->
+    <string name="finding_detail_rule">Rule</string>
+    <string name="finding_detail_severity">Severity</string>
+    <string name="finding_detail_category">Category</string>
+    <string name="finding_detail_compliance_refs">Compliance refs</string>
+    <string name="finding_detail_source">Source location</string>
+    <string name="finding_detail_detected">Detected</string>
+    <string name="finding_detail_comment">Comment</string>
+    <string name="finding_detail_evidence">Evidence</string>
+    <string name="finding_detail_description">Description</string>
+    <string name="finding_detail_remediation">Remediation</string>
+    <string name="finding_detail_references">References</string>
+    <string name="finding_detail_update_status">Update status</string>
+    <string name="finding_detail_comment_placeholder">Add a note (optional)…</string>
+
+    <!-- Reports tab -->
+    <string name="reports_page_title">Reports</string>
+    <string name="reports_generate_button">Generate report</string>
+    <string name="reports_empty_title">No reports yet</string>
+    <string name="reports_empty_description">Generate your first report to share with auditors.</string>
+    <string name="reports_col_format">Format</string>
+    <string name="reports_col_generated">Generated</string>
+    <string name="reports_col_findings">Findings</string>
+    <string name="reports_col_score">Score</string>
+    <string name="reports_col_status">Status</string>
+    <string name="reports_download_action">Download</string>
+    <string name="reports_status_generating">Generating</string>
+    <string name="reports_status_ready">Ready</string>
+    <string name="reports_status_failed">Failed</string>
+    <string name="reports_signed">Signed</string>
+
+    <!-- Generate report modal -->
+    <string name="generate_report_title">Generate report</string>
+    <string name="generate_report_format_label">Format</string>
+    <string name="generate_report_framework_label">Compliance framework</string>
+    <string name="generate_report_framework_all">All frameworks</string>
+    <string name="generate_report_include_resolved">Include resolved findings</string>
+    <string name="generate_report_include_remediation">Include remediation guidance</string>
+    <string name="generate_report_sign">Sign report</string>
+    <string name="generate_report_cancel">Cancel</string>
+    <string name="generate_report_submit">Generate</string>
+    <string name="generate_report_generating">Generating…</string>
+    <string name="generate_report_download">Download</string>
+
+    <!-- Audit trail tab -->
+    <string name="audit_trail_page_title">Audit trail</string>
+    <string name="audit_trail_verify_button">Verify chain integrity</string>
+    <string name="audit_trail_filter_event_type">Event type</string>
+    <string name="audit_trail_filter_all_events">All events</string>
+    <string name="audit_trail_col_timestamp">Timestamp</string>
+    <string name="audit_trail_col_event">Event</string>
+    <string name="audit_trail_col_actor">Actor</string>
+    <string name="audit_trail_col_summary">Summary</string>
+    <string name="audit_trail_events_label">events</string>
+    <string name="audit_trail_load_more">Load more</string>
+    <string name="audit_trail_empty_title">No audit events yet</string>
+    <string name="audit_trail_empty_description">Actions taken in this session will appear here.</string>
+    <string name="audit_trail_details_actor_id">Actor ID</string>
+    <string name="audit_trail_details_payload">Payload</string>
+    <string name="audit_trail_details_prev_hash">Previous hash</string>
+    <string name="audit_trail_details_curr_hash">Current hash</string>
+    <string name="audit_trail_details_copy">Copy to clipboard</string>
+    <string name="audit_trail_verify_title">Chain integrity verification</string>
+    <string name="audit_trail_verify_intact">Chain intact</string>
+    <string name="audit_trail_verify_broken">Chain broken</string>
+    <string name="audit_trail_verify_total_events">Events verified</string>
+    <string name="audit_trail_verify_verified_at">Verified at</string>
+    <string name="audit_trail_verify_break_point">First broken link at event</string>
+    <string name="audit_trail_verify_close">Close</string>
+    <string name="audit_trail_verify_verifying">Verifying…</string>
+
+    <!-- Policies tab -->
+    <string name="policies_title">Policy packs</string>
+    <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>
+    <string name="policies_empty_title">No policy packs available</string>
+    <string name="policies_empty_description">Policy packs define the compliance rules for your audit session.</string>
+    <string name="policies_no_packs_selected">No packs selected</string>
+    <string name="policies_view_rules">View rules</string>
+    <string name="policies_save_selection">Save selection</string>
+    <string name="policies_framework_all">All frameworks</string>
+    <string name="policies_framework_owasp">OWASP</string>
+    <string name="policies_framework_hipaa">HIPAA</string>
+    <string name="policies_framework_soc2">SOC 2</string>
+    <string name="policies_framework_pci_dss">PCI DSS</string>
+    <string name="policies_framework_gdpr">GDPR</string>
+    <string name="policies_framework_custom">Custom</string>
+    <string name="policies_rule_count">rules</string>
+    <string name="policies_selected_label">selected</string>
+    <string name="policies_severity_critical">Critical</string>
+    <string name="policies_severity_high">High</string>
+    <string name="policies_severity_medium">Medium</string>
+    <string name="policies_severity_low">Low</string>
+</resources>
