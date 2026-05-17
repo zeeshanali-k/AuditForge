@@ -249,6 +249,33 @@
     <string name="audit_trail_verify_close">Close</string>
     <string name="audit_trail_verify_verifying">Verifying…</string>
 
+    <!-- Policy library (global nav) -->
+    <string name="policy_library_title">Policy library</string>
+    <string name="policy_library_search_placeholder">Search packs…</string>
+    <string name="policy_library_empty_title">No packs found</string>
+    <string name="policy_library_empty_description">No policy packs match your current filters.</string>
+    <string name="policy_library_select_prompt">Select a policy pack to view its rules</string>
+    <string name="policy_library_rules_heading">Rules</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_api">API configuration</string>
+    <string name="settings_api_base_url_label">Base URL</string>
+    <string name="settings_api_test_button">Test connection</string>
+    <string name="settings_api_test_success">Connected</string>
+    <string name="settings_api_test_failed">Unreachable</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_theme_label">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_section_about">About</string>
+    <string name="settings_about_version">Version</string>
+    <string name="settings_about_platform">Platform</string>
+    <string name="settings_about_data_source">Data source</string>
+    <string name="settings_about_mock_data">Mock data</string>
+    <string name="settings_about_live_data">Live API</string>
+
     <!-- Policies tab -->
     <string name="policies_title">Policy packs</string>
     <string name="policies_description">Select the policy packs to apply to this session\'s scans.</string>
