@@ -23,8 +23,11 @@ import androidx.compose.ui.unit.dp
 import auditforge.composeapp.generated.resources.*
 import com.devscion.auditforge.domain.model.SessionStatus
 import com.devscion.auditforge.domain.model.SessionSummary
+import com.devscion.auditforge.ui.policies.PolicyLibraryContent
 import com.devscion.auditforge.ui.sessions.detail.ScoreBadge
 import com.devscion.auditforge.ui.sessions.detail.StatusBadge
+import com.devscion.auditforge.ui.settings.SettingsContent
+import com.devscion.auditforge.ui.settings.ThemeMode
 import com.devscion.auditforge.ui.theme.AuditForgeColors
 import com.devscion.auditforge.ui.theme.Shape
 import com.devscion.auditforge.ui.theme.Spacing
@@ -32,12 +35,14 @@ import com.devscion.auditforge.ui.theme.auditForgeColors
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-enum class NavDestination { Sessions, Policies, AuditTrail, Settings }
+enum class NavDestination { Sessions, Policies, Settings }
 
 @Composable
 fun SessionListScreen(
     onSessionClick: (String) -> Unit = {},
     onLogout: () -> Unit = {},
+    currentTheme: ThemeMode = ThemeMode.System,
+    onThemeChange: (ThemeMode) -> Unit = {},
     viewModel: SessionListViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -75,7 +80,15 @@ fun SessionListScreen(
                         colors = colors
                     )
 
-                    else -> NavPlaceholder(dest = selectedNav, colors = colors)
+                    NavDestination.Policies -> PolicyLibraryContent(colors = colors)
+
+                    NavDestination.Settings -> SettingsContent(
+                        currentTheme = currentTheme,
+                        onThemeChange = onThemeChange,
+                        colors = colors,
+                    )
+
+                    NavDestination.AuditTrail -> NavPlaceholder(dest = selectedNav, colors = colors)
                 }
             }
         }
@@ -149,10 +162,11 @@ private fun AppTopBar(
     var showUserMenu by remember { mutableStateOf(false) }
 
     Row(
-        modifier = Modifier.fillMaxWidth().height(56.dp).background(colors.surfacePrimary)
-            .padding(horizontal = Spacing.xl),
+        modifier = Modifier.fillMaxWidth()
+            .background(colors.surfacePrimary)
+            .padding(horizontal = Spacing.xl, vertical = Spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
         Text(
             text = stringResource(Res.string.app_name),
@@ -188,7 +202,8 @@ private fun AppTopBar(
                 unfocusedContainerColor = colors.surfacePrimary,
                 cursorColor = colors.accentDefault,
             ),
-            modifier = Modifier.width(320.dp).height(40.dp),
+            modifier = Modifier.width(320.dp)
+                .weight(1f),
         )
 
         Box {
