@@ -87,8 +87,6 @@ fun SessionListScreen(
                         onThemeChange = onThemeChange,
                         colors = colors,
                     )
-
-                    NavDestination.AuditTrail -> NavPlaceholder(dest = selectedNav, colors = colors)
                 }
             }
         }
@@ -728,7 +726,6 @@ private fun navLabel(dest: NavDestination): String = stringResource(
     when (dest) {
         NavDestination.Sessions -> Res.string.nav_sessions
         NavDestination.Policies -> Res.string.nav_policies
-        NavDestination.AuditTrail -> Res.string.nav_audit_trail
         NavDestination.Settings -> Res.string.nav_settings
     }
 )
@@ -736,7 +733,6 @@ private fun navLabel(dest: NavDestination): String = stringResource(
 private fun navIcon(dest: NavDestination) = when (dest) {
     NavDestination.Sessions -> Icons.AutoMirrored.Filled.Article
     NavDestination.Policies -> Icons.Default.Security
-    NavDestination.AuditTrail -> Icons.Default.History
     NavDestination.Settings -> Icons.Default.Settings
 }
 
