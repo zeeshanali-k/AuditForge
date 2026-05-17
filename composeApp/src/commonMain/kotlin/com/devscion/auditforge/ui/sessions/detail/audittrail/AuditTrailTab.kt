@@ -6,14 +6,62 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Report
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,7 +72,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import auditforge.composeapp.generated.resources.*
+import auditforge.composeapp.generated.resources.Res
+import auditforge.composeapp.generated.resources.a11y_close
+import auditforge.composeapp.generated.resources.audit_trail_col_actor
+import auditforge.composeapp.generated.resources.audit_trail_col_event
+import auditforge.composeapp.generated.resources.audit_trail_col_summary
+import auditforge.composeapp.generated.resources.audit_trail_col_timestamp
+import auditforge.composeapp.generated.resources.audit_trail_details_actor_id
+import auditforge.composeapp.generated.resources.audit_trail_details_copy
+import auditforge.composeapp.generated.resources.audit_trail_details_curr_hash
+import auditforge.composeapp.generated.resources.audit_trail_details_payload
+import auditforge.composeapp.generated.resources.audit_trail_details_prev_hash
+import auditforge.composeapp.generated.resources.audit_trail_empty_description
+import auditforge.composeapp.generated.resources.audit_trail_empty_title
+import auditforge.composeapp.generated.resources.audit_trail_events_label
+import auditforge.composeapp.generated.resources.audit_trail_filter_all_events
+import auditforge.composeapp.generated.resources.audit_trail_filter_event_type
+import auditforge.composeapp.generated.resources.audit_trail_load_more
+import auditforge.composeapp.generated.resources.audit_trail_page_title
+import auditforge.composeapp.generated.resources.audit_trail_verify_break_point
+import auditforge.composeapp.generated.resources.audit_trail_verify_broken
+import auditforge.composeapp.generated.resources.audit_trail_verify_button
+import auditforge.composeapp.generated.resources.audit_trail_verify_close
+import auditforge.composeapp.generated.resources.audit_trail_verify_intact
+import auditforge.composeapp.generated.resources.audit_trail_verify_title
+import auditforge.composeapp.generated.resources.audit_trail_verify_total_events
+import auditforge.composeapp.generated.resources.audit_trail_verify_verified_at
+import auditforge.composeapp.generated.resources.audit_trail_verify_verifying
+import auditforge.composeapp.generated.resources.findings_clear_filters
 import com.devscion.auditforge.domain.model.AuditActorType
 import com.devscion.auditforge.domain.model.AuditChainVerification
 import com.devscion.auditforge.domain.model.AuditEvent
@@ -129,7 +204,10 @@ private fun AuditTrailHeader(
             onClick = onVerify,
             enabled = !isVerifying,
             shape = RoundedCornerShape(Shape.button),
-            border = BorderStroke(1.dp, if (isVerifying) colors.borderDefault else colors.accentDefault),
+            border = BorderStroke(
+                1.dp,
+                if (isVerifying) colors.borderDefault else colors.accentDefault
+            ),
             contentPadding = PaddingValues(horizontal = Spacing.lg, vertical = Spacing.sm),
         ) {
             if (isVerifying) {
@@ -205,7 +283,9 @@ private fun AuditTrailFilterBar(
                     modifier = Modifier.size(14.dp),
                 )
             }
-            DropdownMenu(expanded = dropdownExpanded, onDismissRequest = { dropdownExpanded = false }) {
+            DropdownMenu(
+                expanded = dropdownExpanded,
+                onDismissRequest = { dropdownExpanded = false }) {
                 DropdownMenuItem(
                     text = {
                         Text(
@@ -475,7 +555,7 @@ private fun AuditEventDetail(event: AuditEvent, colors: AuditForgeColors) {
 
         DetailRow(
             label = stringResource(Res.string.audit_trail_details_actor_id),
-            value = event.actor.id,
+            value = event.actor.id ?: "",
             colors = colors,
         )
 
@@ -601,7 +681,10 @@ private fun AuditTrailEmptyState(colors: AuditForgeColors) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(colors.accentDefault.copy(alpha = 0.1f), RoundedCornerShape(Shape.card)),
+                    .background(
+                        colors.accentDefault.copy(alpha = 0.1f),
+                        RoundedCornerShape(Shape.card)
+                    ),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -654,10 +737,28 @@ private fun AuditTrailLoadingSkeleton(colors: AuditForgeColors) {
                     horizontalArrangement = Arrangement.spacedBy(Spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Box(Modifier.width(140.dp).height(12.dp).background(colors.borderDefault, RoundedCornerShape(4.dp)))
-                    Box(Modifier.width(120.dp).height(12.dp).background(colors.borderDefault.copy(alpha = 0.7f), RoundedCornerShape(4.dp)))
-                    Box(Modifier.width(100.dp).height(12.dp).background(colors.borderDefault.copy(alpha = 0.6f), RoundedCornerShape(4.dp)))
-                    Box(Modifier.weight(1f).height(12.dp).background(colors.borderDefault.copy(alpha = 0.4f), RoundedCornerShape(4.dp)))
+                    Box(
+                        Modifier.width(140.dp).height(12.dp)
+                            .background(colors.borderDefault, RoundedCornerShape(4.dp))
+                    )
+                    Box(
+                        Modifier.width(120.dp).height(12.dp).background(
+                            colors.borderDefault.copy(alpha = 0.7f),
+                            RoundedCornerShape(4.dp)
+                        )
+                    )
+                    Box(
+                        Modifier.width(100.dp).height(12.dp).background(
+                            colors.borderDefault.copy(alpha = 0.6f),
+                            RoundedCornerShape(4.dp)
+                        )
+                    )
+                    Box(
+                        Modifier.weight(1f).height(12.dp).background(
+                            colors.borderDefault.copy(alpha = 0.4f),
+                            RoundedCornerShape(4.dp)
+                        )
+                    )
                 }
                 HorizontalDivider(color = colors.borderDefault)
             }
@@ -720,8 +821,10 @@ private fun ChainVerifyModal(
                     }
 
                     result != null -> {
-                        val icon = if (result.chainIntact) Icons.Default.CheckCircle else Icons.Default.Cancel
-                        val tint = if (result.chainIntact) colors.severityResolved else colors.severityCritical
+                        val icon =
+                            if (result.chainIntact) Icons.Default.CheckCircle else Icons.Default.Cancel
+                        val tint =
+                            if (result.chainIntact) colors.severityResolved else colors.severityCritical
                         val headlineRes = if (result.chainIntact) {
                             Res.string.audit_trail_verify_intact
                         } else {
@@ -768,7 +871,10 @@ private fun ChainVerifyModal(
 
                         HorizontalDivider(color = colors.borderDefault)
 
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
                             Button(
                                 onClick = onDismiss,
                                 shape = RoundedCornerShape(Shape.button),
@@ -776,7 +882,10 @@ private fun ChainVerifyModal(
                                     containerColor = colors.accentDefault,
                                     contentColor = colors.textOnAccent,
                                 ),
-                                contentPadding = PaddingValues(horizontal = Spacing.lg, vertical = Spacing.sm),
+                                contentPadding = PaddingValues(
+                                    horizontal = Spacing.lg,
+                                    vertical = Spacing.sm
+                                ),
                             ) {
                                 Text(
                                     text = stringResource(Res.string.audit_trail_verify_close),
@@ -826,6 +935,7 @@ private fun eventTypeLabel(type: AuditEventType): String = when (type) {
     AuditEventType.ScanCompleted -> "Scan completed"
     AuditEventType.FindingCreated -> "Finding created"
     AuditEventType.ReportGenerated -> "Report generated"
+    AuditEventType.ReportRequested -> "Report requested"
     AuditEventType.PolicyChanged -> "Policy changed"
     AuditEventType.UserAction -> "User action"
 }
@@ -838,9 +948,12 @@ private fun eventSummary(event: AuditEvent): String {
         AuditEventType.UploadAdded -> str("filename").ifBlank { "File added" }
         AuditEventType.ScanStarted -> "Scan ${str("scan_id")} started"
         AuditEventType.ScanCompleted -> "${str("findings_count")} findings · score ${str("overall_score")}"
+        AuditEventType.ReportRequested -> "${str("report_requested")} report requested"
         AuditEventType.FindingCreated -> "[${str("severity")}] ${str("title")}".ifBlank { "Finding created" }
         AuditEventType.ReportGenerated -> "${str("format").uppercase()} report generated"
-        AuditEventType.PolicyChanged -> str("added_packs").takeIf { it.isNotBlank() }?.let { "Added: $it" } ?: "Policy updated"
+        AuditEventType.PolicyChanged -> str("added_packs").takeIf { it.isNotBlank() }
+            ?.let { "Added: $it" } ?: "Policy updated"
+
         AuditEventType.UserAction -> str("action").ifBlank { "User action" }
     }
 }
@@ -851,6 +964,7 @@ private fun eventTypeIcon(type: AuditEventType): ImageVector = when (type) {
     AuditEventType.ScanStarted -> Icons.Default.PlayArrow
     AuditEventType.ScanCompleted -> Icons.Default.CheckCircle
     AuditEventType.FindingCreated -> Icons.Default.BugReport
+    AuditEventType.ReportRequested -> Icons.Default.Report
     AuditEventType.ReportGenerated -> Icons.Default.Description
     AuditEventType.PolicyChanged -> Icons.Default.Shield
     AuditEventType.UserAction -> Icons.Default.Person
@@ -864,6 +978,7 @@ private fun eventTypeColor(type: AuditEventType, colors: AuditForgeColors) = whe
     AuditEventType.ScanCompleted -> colors.severityResolved
     AuditEventType.FindingCreated -> colors.severityHigh
     AuditEventType.ReportGenerated -> colors.severityLow
+    AuditEventType.ReportRequested -> colors.severityLow
     AuditEventType.PolicyChanged -> colors.textSecondary
     AuditEventType.UserAction -> colors.textSecondary
 }

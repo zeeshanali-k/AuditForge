@@ -6,14 +6,32 @@ import kotlinx.serialization.json.JsonObject
 
 @Serializable
 enum class AuditEventType {
-    @SerialName("session_created") SessionCreated,
-    @SerialName("upload_added") UploadAdded,
-    @SerialName("scan_started") ScanStarted,
-    @SerialName("scan_completed") ScanCompleted,
-    @SerialName("finding_created") FindingCreated,
-    @SerialName("report_generated") ReportGenerated,
-    @SerialName("policy_changed") PolicyChanged,
-    @SerialName("user_action") UserAction,
+    @SerialName("session_created")
+    SessionCreated,
+
+    @SerialName("upload_added")
+    UploadAdded,
+
+    @SerialName("report_requested")
+    ReportRequested,
+
+    @SerialName("scan_started")
+    ScanStarted,
+
+    @SerialName("scan_completed")
+    ScanCompleted,
+
+    @SerialName("finding_created")
+    FindingCreated,
+
+    @SerialName("report_generated")
+    ReportGenerated,
+
+    @SerialName("policy_changed")
+    PolicyChanged,
+
+    @SerialName("user_action")
+    UserAction,
 }
 
 fun AuditEventType.toApiParam(): String = when (this) {
@@ -25,18 +43,22 @@ fun AuditEventType.toApiParam(): String = when (this) {
     AuditEventType.ReportGenerated -> "report_generated"
     AuditEventType.PolicyChanged -> "policy_changed"
     AuditEventType.UserAction -> "user_action"
+    AuditEventType.ReportRequested -> "report_requested"
 }
 
 @Serializable
 enum class AuditActorType {
-    @SerialName("user") User,
-    @SerialName("system") System,
+    @SerialName("user")
+    User,
+
+    @SerialName("system")
+    System,
 }
 
 @Serializable
 data class AuditActor(
     val type: AuditActorType,
-    val id: String,
+    val id: String? = null,
     val name: String,
 )
 

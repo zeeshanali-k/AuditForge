@@ -5,12 +5,28 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ScanStatus {
-    @SerialName("queued") Queued,
-    @SerialName("running") Running,
-    @SerialName("completed") Completed,
-    @SerialName("failed") Failed,
-    @SerialName("cancelled") Cancelled,
+    @SerialName("queued")
+    Queued,
+
+    @SerialName("running")
+    Running,
+
+    @SerialName("completed")
+    Completed,
+
+    @SerialName("failed")
+    Failed,
+
+    @SerialName("cancelled")
+    Cancelled,
 }
+
+@Serializable
+data class CancelScanResponse(
+    val id: String,
+    val status: ScanStatus,
+    @SerialName("cancelled_at") val cancelledAt: String? = null,
+)
 
 @Serializable
 data class Scan(

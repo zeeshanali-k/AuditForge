@@ -3,24 +3,24 @@ package com.devscion.auditforge.di
 import com.devscion.auditforge.AppFlavor
 import com.devscion.auditforge.FilePicker
 import com.devscion.auditforge.ReportDownloader
-import com.devscion.auditforge.data.network.AuthApiService
-import com.devscion.auditforge.data.network.PolicyApiService
-import com.devscion.auditforge.data.network.FindingsApiService
 import com.devscion.auditforge.data.network.AuditTrailApiService
+import com.devscion.auditforge.data.network.AuthApiService
+import com.devscion.auditforge.data.network.FindingsApiService
+import com.devscion.auditforge.data.network.PolicyApiService
 import com.devscion.auditforge.data.network.ReportsApiService
 import com.devscion.auditforge.data.network.ScanApiService
 import com.devscion.auditforge.data.network.SessionApiService
 import com.devscion.auditforge.data.network.UploadApiService
-import com.devscion.auditforge.data.repository.AuthRepository
-import com.devscion.auditforge.data.repository.AuthRepositoryImpl
-import com.devscion.auditforge.data.repository.MockAuthRepository
-import com.devscion.auditforge.data.repository.MockPolicyRepository
-import com.devscion.auditforge.data.repository.FindingsRepository
-import com.devscion.auditforge.data.repository.FindingsRepositoryImpl
-import com.devscion.auditforge.data.repository.MockFindingsRepository
 import com.devscion.auditforge.data.repository.AuditTrailRepository
 import com.devscion.auditforge.data.repository.AuditTrailRepositoryImpl
+import com.devscion.auditforge.data.repository.AuthRepository
+import com.devscion.auditforge.data.repository.AuthRepositoryImpl
+import com.devscion.auditforge.data.repository.FindingsRepository
+import com.devscion.auditforge.data.repository.FindingsRepositoryImpl
 import com.devscion.auditforge.data.repository.MockAuditTrailRepository
+import com.devscion.auditforge.data.repository.MockAuthRepository
+import com.devscion.auditforge.data.repository.MockFindingsRepository
+import com.devscion.auditforge.data.repository.MockPolicyRepository
 import com.devscion.auditforge.data.repository.MockReportsRepository
 import com.devscion.auditforge.data.repository.MockScanRepository
 import com.devscion.auditforge.data.repository.MockSessionRepository
@@ -57,17 +57,19 @@ class AppModule {
     fun provideTokenStorage() = TokenStorage()
 
     @Singleton
-    fun provideHttpClient() = HttpClient {
+    fun provideHttpClient() = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
                 isLenient = true
                 encodeDefaults = true
+                this.explicitNulls = false
+                this.prettyPrint = true
             })
         }
         install(Logging) {
             logger = Logger.DEFAULT
-            level = LogLevel.INFO
+            level = LogLevel.ALL
         }
     }
 
