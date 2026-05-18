@@ -131,16 +131,26 @@ private fun SessionDetailContent(
             }
         }
 
-        TabContent(tab = uiState.selectedTab, sessionId = sessionId, colors = colors)
+        TabContent(
+            tab = uiState.selectedTab,
+            sessionId = sessionId,
+            sessionStatus = uiState.session?.status ?: SessionStatus.Created,
+            colors = colors,
+        )
     }
 }
 
 @Composable
-private fun TabContent(tab: SessionDetailTab, sessionId: String, colors: AuditForgeColors) {
+private fun TabContent(
+    tab: SessionDetailTab,
+    sessionId: String,
+    sessionStatus: SessionStatus,
+    colors: AuditForgeColors,
+) {
     when (tab) {
         SessionDetailTab.Uploads -> UploadsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Policies -> PoliciesTab(sessionId = sessionId, colors = colors)
-        SessionDetailTab.Scans -> ScansTab(sessionId = sessionId, colors = colors)
+        SessionDetailTab.Scans -> ScansTab(sessionId = sessionId, sessionStatus = sessionStatus, colors = colors)
         SessionDetailTab.Findings -> FindingsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.Reports -> ReportsTab(sessionId = sessionId, colors = colors)
         SessionDetailTab.AuditTrail -> AuditTrailTab(sessionId = sessionId, colors = colors)

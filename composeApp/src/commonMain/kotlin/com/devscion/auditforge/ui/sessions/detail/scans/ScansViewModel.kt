@@ -6,8 +6,10 @@ import com.devscion.auditforge.data.network.ApiResult
 import com.devscion.auditforge.domain.model.LiveFinding
 import com.devscion.auditforge.domain.model.RuleSeverity
 import com.devscion.auditforge.domain.model.ScanProgressEvent
+import com.devscion.auditforge.domain.model.SessionStatus
 import com.devscion.auditforge.domain.usecase.policies.GetPolicyPacksUseCase
 import com.devscion.auditforge.domain.usecase.scans.CancelScanUseCase
+import com.devscion.auditforge.domain.usecase.scans.GetActiveScanUseCase
 import com.devscion.auditforge.domain.usecase.scans.ObserveScanProgressUseCase
 import com.devscion.auditforge.domain.usecase.scans.TriggerScanUseCase
 import kotlinx.coroutines.Job
@@ -22,10 +24,12 @@ import org.koin.core.annotation.KoinViewModel
 @KoinViewModel
 class ScansViewModel(
     @InjectedParam private val sessionId: String,
+    @InjectedParam private val initialSessionStatus: SessionStatus,
     private val getPolicyPacksUseCase: GetPolicyPacksUseCase,
     private val triggerScanUseCase: TriggerScanUseCase,
     private val cancelScanUseCase: CancelScanUseCase,
     private val observeScanProgressUseCase: ObserveScanProgressUseCase,
+    private val getActiveScanUseCase: GetActiveScanUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ScansUiState())
@@ -63,6 +67,7 @@ class ScansViewModel(
                             selectedPackIds = packs.map { p -> p.id }.toSet(),
                         )
                     }
+                    restoreActiveScanIfNeeded()
                 }
 
                 is ApiResult.Error -> _uiState.update {
@@ -75,6 +80,28 @@ class ScansViewModel(
                         error = "Failed to load policy packs. Check your connection."
                     )
                 }
+            }
+        }
+    }
+
+    private suspend fun restoreActiveScanIfNeeded() {
+        val activeScan = when (val result = getActiveScanUseCase(sessionId)) {
+            is ApiResult.Success -> result.data
+            else -> null
+        }
+        when {
+            activeScan != null -> {
+                _uiState.update {
+                    it.copy(
+                        currentScan = activeScan,
+                        progressPercent = activeScan.progressPercent,
+                        currentStep = activeScan.currentStep ?: "",
+                    )
+                }
+                startObservingProgress(activeScan.sessionId, activeScan.id)
+            }
+            initialSessionStatus == SessionStatus.Scanning -> {
+                _uiState.update { it.copy(isScanningElsewhere = true) }
             }
         }
     }

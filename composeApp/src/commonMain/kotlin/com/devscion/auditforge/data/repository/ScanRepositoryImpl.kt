@@ -19,6 +19,9 @@ class ScanRepositoryImpl(private val scanApiService: ScanApiService) : ScanRepos
     override suspend fun getScan(sessionId: String, scanId: String): ApiResult<Scan> =
         scanApiService.getScan(sessionId, scanId)
 
+    override suspend fun getActiveScan(sessionId: String): ApiResult<Scan?> =
+        ApiResult.Success(null)
+
     override suspend fun cancelScan(
         sessionId: String,
         scanId: String

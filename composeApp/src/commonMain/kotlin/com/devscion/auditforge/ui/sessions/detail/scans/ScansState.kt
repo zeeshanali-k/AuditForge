@@ -21,9 +21,14 @@ data class ScansUiState(
     val completedOverallScore: Int? = null,
     val error: String? = null,
     val isCancelling: Boolean = false,
+    // True when the session is scanning but the active scan could not be retrieved (real API, no scan ID available)
+    val isScanningElsewhere: Boolean = false,
 ) {
     val isScanning: Boolean
         get() = currentScan?.status == ScanStatus.Running || currentScan?.status == ScanStatus.Queued
+
+    val showScanningView: Boolean
+        get() = isScanning || isScanningElsewhere
 
     val isCompleted: Boolean
         get() = completedTotalFindings != null
@@ -32,7 +37,7 @@ data class ScansUiState(
         get() = currentScan?.status == ScanStatus.Failed
 
     val canStartScan: Boolean
-        get() = !isScanning && selectedPackIds.isNotEmpty()
+        get() = !showScanningView && selectedPackIds.isNotEmpty()
 }
 
 sealed class ScansIntent {
