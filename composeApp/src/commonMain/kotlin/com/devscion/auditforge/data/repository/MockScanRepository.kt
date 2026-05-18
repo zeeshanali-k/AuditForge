@@ -49,6 +49,15 @@ class MockScanRepository : ScanRepository {
         }
     }
 
+    override suspend fun getActiveScan(sessionId: String): ApiResult<Scan?> {
+        return mutex.withLock {
+            val scan = scans[sessionId]
+            ApiResult.Success(
+                if (scan?.status == ScanStatus.Queued || scan?.status == ScanStatus.Running) scan else null
+            )
+        }
+    }
+
     override suspend fun cancelScan(
         sessionId: String,
         scanId: String

@@ -22,6 +22,7 @@ import com.devscion.auditforge.domain.model.LiveFinding
 import com.devscion.auditforge.domain.model.PolicyPackSummary
 import com.devscion.auditforge.domain.model.RuleSeverity
 import com.devscion.auditforge.domain.model.ScanStatus
+import com.devscion.auditforge.domain.model.SessionStatus
 import com.devscion.auditforge.ui.theme.AuditForgeColors
 import com.devscion.auditforge.ui.theme.Shape
 import com.devscion.auditforge.ui.theme.Spacing
@@ -33,15 +34,17 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun ScansTab(
     sessionId: String,
+    sessionStatus: SessionStatus,
     colors: AuditForgeColors,
-    viewModel: ScansViewModel = koinViewModel(parameters = { parametersOf(sessionId) }),
+    viewModel: ScansViewModel = koinViewModel(parameters = { parametersOf(sessionId, sessionStatus) }),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             uiState.isLoading && uiState.currentScan == null -> ScansLoadingSkeleton(colors)
-            uiState.isScanning -> LiveScanView(
+            uiState.isScanningElsewhere -> ScanInProgressPlaceholder(colors)
+            uiState.showScanningView -> LiveScanView(
                 uiState = uiState,
                 onCancel = { viewModel.onIntent(ScansIntent.CancelScan) },
                 colors = colors,
@@ -569,6 +572,23 @@ private fun ScansLoadingSkeleton(colors: AuditForgeColors) {
                     colors.borderDefault.copy(alpha = 0.4f),
                     RoundedCornerShape(Shape.card),
                 )
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScanInProgressPlaceholder(colors: AuditForgeColors) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+        ) {
+            CircularProgressIndicator(color = colors.accentDefault)
+            Text(
+                text = stringResource(Res.string.scan_status_running),
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.textSecondary,
             )
         }
     }
